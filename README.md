@@ -181,7 +181,6 @@ If it is an animated naxel object, it will have the following:
 
 - One of each following lists (the most optimized in term of speed and space depending on the naxel object data) per frame:
     * `"voxels_dict"`, `"voxels_list"`, `"voxels_grid"`
-    * `"light_emission_dict"`, `"light_emission_items"`
     * `"light_value_dict"`, `"light_value_items"`, `"light_value_grid"`
 
 ## Pre-processing Details
