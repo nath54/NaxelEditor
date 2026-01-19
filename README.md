@@ -155,9 +155,9 @@ By default, any object that doesn't have a specific light value will have a ligh
 This is the **post-processed** light value, meaning it is the light value of the single voxel after all the light emission objects have been processed.
 The post-processing will override any light value set manually.
 
-- `"light_value_dict"` (`dict[str, float]`, Default: `{}`): The key is the coordinates of the **post-processed** single voxel. The value is the post processed light value. Between `0` and `1`.
-- `"light_value_items"` (`list[tuple[position, float]]`, Default: `[]`): Under the tuple items format, the first value is the position of the post processed single voxel, and the second value is the post processed light value. Between `0` and `1`.
-- `"light_value_grid"` (`list[list[list[float]]]`, Default: `[]`): The values are the post processed light values. Between `0` and `1`.
+- `"light_value_dict"` (`dict[str, tuple[float, float, float]]`, Default: `{}`): The key is the coordinates of the **post-processed** single voxel. The value is the post processed light color value. Between `0` and `1`.
+- `"light_value_items"` (`list[tuple[position, tuple[float, float, float]]]`, Default: `[]`): Under the tuple items format, the first value is the position of the post processed single voxel, and the second value is the post processed light color value. Between `0` and `1`.
+- `"light_value_grid"` (`list[list[list[tuple[float, float, float]]]]`, Default: `[]`): The values are the post processed light color values. Between `0` and `1`.
 
 #### Animated Naxel Object
 
@@ -166,6 +166,24 @@ If it is an animated naxel object, it will have the following:
 - `"frames"` (`list[dict[str, Any]]`, Default: `[]`): The frames of the naxel object.
 - `"frames[i].duration"` (Optional, `float`, Default: `1`): The duration of the frame, in seconds.
 - `"frames[i].___` Any of the non-animated naxel object properties for the current frame.
+
+### Environment Details, Color / Skybox
+
+- `"light_diffusion_strength"` (Optional, `float`, Default: `1`): The strength of the light diffusion. More this value is, more the light will spread across the naxel object.
+- `"environment_type"` (Optional, `str`, Default: `"color"`): The type of environment, it can be `"color"` or `"skybox"`.
+
+If the environment type is `"color"`, the environment will be a solid color and must have the fields:
+- `"environment_color"` (Required, `cl`): The color of the environment.
+- `"environment_color_light_emission"` (Optional, `float`, Default: `1`): The light emission of the environment.
+
+If the environment type is `"skybox"`, the environment will be a skybox and must have the fields:
+
+- `"sky_color"` (Required, `cl`): The color of the skybox.
+- `"sky_color_light_emission"` (Optional, `float`, Default: `0.1`): The light emission of the skybox.
+- `"ground_color"` (Required, `cl`): The color of the ground.
+- `"ground_color_light_emission"` (Optional, `float`, Default: `0`): The light emission of the ground.
+- `"sun_direction"` (Optional, `tuple[float, float, float]`, Default: `(0, -1, 0)`): The direction of the sun.
+- `"sun_light_emission"` (Optional, `float`, Default: `1`): The light emission of the sun.
 
 ### Camera
 
