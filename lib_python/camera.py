@@ -27,8 +27,8 @@ class Camera:
     def export_to_dict(self) -> dict[str, Any]:
 
         return {
-            "camera_position": self.camera_position,
-            "camera_rotation": self.camera_rotation,
+            "camera_position": self.camera_position.export_to_str(),
+            "camera_rotation": self.camera_rotation.export_to_str(),
             "camera_fov": self.camera_fov,
             "camera_clip_start": self.camera_clip_start,
             "camera_clip_end": self.camera_clip_end,

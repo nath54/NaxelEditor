@@ -50,8 +50,8 @@ class EnvironmentColor(Environment):
             "environment_type": "color",
             "light_diffusion_strength": self.light_diffusion_strength,
             "light_algorithm": self.light_algorithm,
-            "environment_color": self.environment_color,
-            "environment_color_light_emission": self.environment_color_light_emission,
+            "environment_color": self.environment_color.export_to_lst(),
+            "environment_color_light_emission": self.environment_color_light_emission.export_to_lst(),
         }
 
 
@@ -87,10 +87,10 @@ class EnvironmentSkyBox(Environment):
             "environment_type": "skybox",
             "light_diffusion_strength": self.light_diffusion_strength,
             "light_algorithm": self.light_algorithm,
-            "sky_color": self.sky_color,
-            "sky_color_light_emission": self.sky_color_light_emission,
-            "ground_color": self.ground_color,
-            "ground_color_light_emission": self.ground_color_light_emission,
-            "sun_direction": self.sun_direction,
-            "sun_light_emission": self.sun_light_emission,
+            "sky_color": self.sky_color.export_to_lst(),
+            "sky_color_light_emission": self.sky_color_light_emission.export_to_lst(),
+            "ground_color": self.ground_color.export_to_lst(),
+            "ground_color_light_emission": self.ground_color_light_emission.export_to_lst(),
+            "sun_direction": self.sun_direction.export_to_str(),
+            "sun_light_emission": self.sun_light_emission.export_to_lst(),
         }

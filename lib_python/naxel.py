@@ -213,10 +213,10 @@ class Naxel:
             "is_post_processed": self.is_post_processed,
 
             # --- General Data ---
-            "default_color": self.general_data.default_color,
-            "color_palette": self.general_data.color_palette,
+            "default_color": self.general_data.default_color.export_to_lst(),
+            "color_palette": self.general_data.color_palette.export_to_dict(),
             "grid_thickness": self.general_data.grid_thickness,
-            "grid_color": self.general_data.grid_color,
+            "grid_color": self.general_data.grid_color.export_to_lst(),
         }
 
         if len(self.data_frames) == 0:
