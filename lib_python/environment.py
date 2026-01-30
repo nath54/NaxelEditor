@@ -1,7 +1,7 @@
 from typing import Any
 
-from color import Color
-from light_value import LightValue
+from .color import Color
+from .light_value import LightValue
 
 from .vec import Vec3
 
