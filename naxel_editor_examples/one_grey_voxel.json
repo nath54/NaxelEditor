@@ -1,0 +1,9 @@
+{
+    "name": "Single Grey Voxel",
+    "description": "A basic 1x1x1 grey cube.",
+    "voxels_dict": {
+        "0,0,0": "grey"
+    },
+    "environment_type": "color",
+    "environment_color": [0, 0, 0, 0]
+}
