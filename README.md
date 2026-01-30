@@ -171,6 +171,7 @@ If it is an animated naxel object, it will have the following:
 
 - `"light_diffusion_strength"` (Optional, `float`, Default: `1`): The strength of the light diffusion. More this value is, more the light will spread across the naxel object.
 - `"environment_type"` (Optional, `str`, Default: `"color"`): The type of environment, it can be `"color"` or `"skybox"`.
+- `"light_algorithm"` (Optional, `str`, Default: `"none"`): The algorithm to use for the scene light. See the section **[Light Algorithms](#light-algorithms)**.
 
 If the environment type is `"color"`, the environment will be a solid color and must have the fields:
 - `"environment_color"` (Required, `cl`): The color of the environment.
@@ -206,3 +207,37 @@ If the environment type is `"skybox"`, the environment will be a skybox and must
 Before rendering the naxel object has to be pre-processed.
 
 It can then be cached to speed up the rendering process.
+
+## Light Algorithms
+
+**Light** act as a **multiplier for the voxel color**. A light value of *(1, 1, 1)* means the voxel will be rendered as is, while a light value of *(0, 0, 0)* means the voxel will be rendered as black. But a light value of *(1, 0.5, 0) *means the voxel will be rendered with full red, half the green light and no blue light.
+
+Light value is **additive**, meaning that if two light sources are affecting the same voxel, their light values will be added together.
+
+Here are the details about the light algorithms planned to work with the naxel object.
+
+### None - `none`
+
+No light algorithm will be used, the light will be rendered as is.
+
+### Simple diffusion - `simple_diffusion`
+
+- Initialize an Unordered Multi Lane Queue that we simply call "queue" here for the sake of simplicity.
+- A *marked* matrix is created for the naxel object.
+- The light matrix is initialized to *(0, 0, 0)* for all the voxels.
+- We add to the queue with all the light sources voxels.
+- The environment "sky" is also considered as a light source:
+    - If the environment is a color, a skybox sphere is calculated with the environment color.
+    - If the environment is a skybox, a skybox sphere is calculated with the correct sun position for the light source.
+    - For compute efficiency the skybox is calculated to be the smallest sphere that contains the entire naxel object.
+- To all the light sources will be assigned an id modulo 64 (the marked matrix will be typed as *int64*).
+- Now, while there are voxels in the queue:
+    - Pop one voxel from the queue.
+    - Check if the voxel is marked.
+    - If it is marked, stop here, else continue.
+    - Mark the voxel.
+    - Add the light value to the current voxel light value.
+    - For each neighbor of the current voxel:
+        - If the neighbor is not marked:
+            - Add the neighbor to the queue with `new light value = current voxel light value * light diffusion strength`.
+
