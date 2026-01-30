@@ -40,3 +40,43 @@ class Pos:
 
             if v is not None
         }
+
+
+def parse_pos(data: Any) -> Pos:
+    """
+    Parse a Pos from various JSON formats.
+
+    Supported formats:
+        - list/tuple: [x, y, z] -> Pos with xyz only
+        - dict with "xyz" key: {"xyz": [0, 0, 0], "shift": ..., ...}
+        - dict without "xyz" key: treated as Vec3
+        - Pos instance (pass-through)
+    """
+
+    if isinstance(data, Pos):
+        return data
+
+    if isinstance(data, (list, tuple)):
+        return Pos(xyz=parse_vec3(data))
+
+    if isinstance(data, dict):
+
+        if "xyz" in data:
+
+            return Pos(
+                xyz=parse_vec3(data["xyz"]),
+                shift=parse_vec3(data["shift"]) if "shift" in data else None,
+                scale=parse_vec3(data["scale"]) if "scale" in data else None,
+                rotation=parse_vec3(data["rotation"]) if "rotation" in data else None,
+                flip=parse_vec3(data["flip"]) if "flip" in data else None,
+                crop=parse_vec3(data["crop"]) if "crop" in data else None,
+            )
+
+        else:
+
+            return Pos(xyz=parse_vec3(data))
+
+    if isinstance(data, str):
+        return Pos(xyz=parse_vec3(data))
+
+    return Pos(xyz=Vec3(0, 0, 0))
