@@ -36,6 +36,14 @@ A Naxel Object is a json object that has the following fields:
 - `"tags"` (Optional, `list[str]`, Default: `[]`): Tags that can be useful for referencing the naxel object in a collection of naxel objects.
 - `"license"` (Optional, `str`, Default: `""`): The license of the naxel object.
 
+### Position type
+
+The `pos` type can be represented either as:
+* A tuple of 3 integers: `(x, y, z)`
+* A dictionary with the keys `x`, `y`, `z` and optional `shift`, `scale`, `rotation`, `flip`, `crop`.
+* A list of 3 integers: `[x, y, z]`
+* A string in the formats `"x,y,z"`, `"x y z"`, `"x-y-z"`, `"x_y_z"`, `"x.y.z"`
+
 ### Color Type
 
 The type `cl` represents a color, it can be either `str`, `int` or `tuple[int, int, int]`, or a dictionary.
@@ -46,29 +54,21 @@ The type `cl` represents a color, it can be either `str`, `int` or `tuple[int, i
 * If the value is a dictionary, **none of its sub-color types can either be a dictionary**, and it must have a key `type` with the values:
     * `"gradient_lst"`: It is a gradient color, and the colors and positions are in 2 separated lists.
         * `"colors"` (Required, `list[cl]`): The colors of the gradient.
-        * `"positions"` (Optional, `list[float]`, Default: `None`): The positions of the colors in the gradient.
+        * `"positions"` (Optional, `list[pos]`, Default: `None`): The positions of the colors in the gradient.
         * `"interpolation"` (Optional, `str`, Default: `"linear"`): The interpolation of the gradient, it can be `"linear"` or `"cubic"`.
     * `"gradient_dict"`: It is a gradient color, and the colors and positions are in a dictionary.
-        * `"colors"` (Required, `dict[str, cl]`): The key are the position and the value is the color.
+        * `"colors"` (Required, `dict[pos, cl]`): The key are the position and the value is the color.
         * `"interpolation"` (Optional, `str`, Default: `"linear"`): The interpolation of the gradient, it can be `"linear"` or `"cubic"`.
     * `"gradient_items"`: It is a list of tuples, where the first value is the position and the second value is the color.
-        * `"colors"` (Required, `list[tuple[str, cl]]`): The tuples of (position, color)
+        * `"colors"` (Required, `list[tuple[pos, cl]]`): The tuples of (position, color)
         * `"interpolation"` (Optional, `str`, Default: `"linear"`): The interpolation of the gradient, it can be `"linear"` or `"cubic"`.
     * `"color_zones"`: A list of rectangle zones that each have its own color.
         * `"default_color"` (Optional, `cl`, Default: `"#000000"`): The default color if no zone is found. If different zones overlap, the first one in the list will be used.
         * `"zones"` (Required, `list[dict[str, Any]]`): The list of zones.
         * `"zones[i].color"` (Required, `cl`): The color of the zone.
-        * `"zones[i].positions"` (Required, `list[pos]`): The positions of the zone.
+        * `"zones[i].positions"` (Required, `tuple[pos, pos]`): The positions of the zone (corner 1 and corner 2).
 
 The color values `int`, `tuple[int, int, int]` and `tuple[int, int, int, int]` are in the range [0, 255]. If any value is out of range, it will be clamped to the range.
-
-### Position type
-
-The `pos` type can be represented either as:
-* A tuple of 3 integers: `(x, y, z)`
-* A dictionary with the keys `x`, `y`, `z` and optional `shift`, `scale`, `rotation`, `flip`, `crop`.
-* A list of 3 integers: `[x, y, z]`
-* A string in the formats `"x,y,z"`, `"x y z"`, `"x-y-z"`, `"x_y_z"`, `"x.y.z"`
 
 ### Voxel Value Type
 
@@ -121,7 +121,7 @@ The type `voxel_value` represents a voxel value, it can be represented in variou
         * `"color"` (Required, `cl`): The color of the cylinder.
     * `"polygon"`: Creates a polygon voxel.
         * `"position"` (Required if not from `voxel_dict`, `pos`): The position of the first point of the polygon.
-        * `"polygon"` (Required, `list[tuple[int, int, int]]`): The vertices of the polygon. The polygon is not automatically closed, so you need to add the last point to the first point to close it if you want that.
+        * `"polygon"` (Required, `list[pos]`): The vertices of the polygon. The polygon is not automatically closed, so you need to add the last point to the first point to close it if you want that.
         * `"color"` (Required, `cl`): The color of the polygon.
 
 *Note: If multiple voxels are placed at the same coordinates, the last one will be the one that is rendered.*
@@ -145,8 +145,8 @@ If it is not an animated naxel object, it can have the following:
 
 ##### Light Emission
 
-- `"light_emission_dict"` (`dict[str, float]`, Default: `{}`): The key is the coordinates of the **non-pre-processed** voxel object (so a single voxel, or a shape / more complex object of type `voxel_value`). The value is the light emission of the voxel object.
-- `"light_emission_items"` (`list[tuple[position, float]]`, Default: `[]`): Under the tuple items format, the first value is the position of the voxel object, and the second value is the light emission of the voxel object.
+- `"light_emission_dict"` (`dict[pos, tuple[float, float, float]]`, Default: `{}`): The key is the coordinates of the **non-pre-processed** voxel object (so a single voxel, or a shape / more complex object of type `voxel_value`). The value is the light emission of the voxel object.
+- `"light_emission_items"` (`list[tuple[pos, tuple[float, float, float]]]`, Default: `[]`): Under the tuple items format, the first value is the position of the voxel object, and the second value is the light emission of the voxel object.
 
 ##### Light Value
 
@@ -155,8 +155,8 @@ By default, any object that doesn't have a specific light value will have a ligh
 This is the **post-processed** light value, meaning it is the light value of the single voxel after all the light emission objects have been processed.
 The post-processing will override any light value set manually.
 
-- `"light_value_dict"` (`dict[str, tuple[float, float, float]]`, Default: `{}`): The key is the coordinates of the **post-processed** single voxel. The value is the post processed light color value. Between `0` and `1`.
-- `"light_value_items"` (`list[tuple[position, tuple[float, float, float]]]`, Default: `[]`): Under the tuple items format, the first value is the position of the post processed single voxel, and the second value is the post processed light color value. Between `0` and `1`.
+- `"light_value_dict"` (`dict[pos, tuple[float, float, float]]`, Default: `{}`): The key is the coordinates of the **post-processed** single voxel. The value is the post processed light color value. Between `0` and `1`.
+- `"light_value_items"` (`list[tuple[pos, tuple[float, float, float]]]`, Default: `[]`): Under the tuple items format, the first value is the position of the post processed single voxel, and the second value is the post processed light color value. Between `0` and `1`.
 - `"light_value_grid"` (`list[list[list[tuple[float, float, float]]]]`, Default: `[]`): The values are the post processed light color values. Between `0` and `1`.
 
 #### Animated Naxel Object
@@ -169,7 +169,7 @@ If it is an animated naxel object, it will have the following:
 
 ### Environment Details, Color / Skybox
 
-- `"light_diffusion_strength"` (Optional, `float`, Default: `1`): The strength of the light diffusion. More this value is, more the light will spread across the naxel object.
+- `"light_diffusion_strength"` (Optional, `float`, Default: `1`): The strength of the light diffusion. The higher this value is, more the light will spread across the naxel object.
 - `"environment_type"` (Optional, `str`, Default: `"color"`): The type of environment, it can be `"color"` or `"skybox"`.
 - `"light_algorithm"` (Optional, `str`, Default: `"none"`): The algorithm to use for the scene light. See the section **[Light Algorithms](#light-algorithms)**.
 
@@ -233,11 +233,16 @@ No light algorithm will be used, the light will be rendered as is.
 - To all the light sources will be assigned an id modulo 64 (the marked matrix will be typed as *int64*).
 - Now, while there are voxels in the queue:
     - Pop one voxel from the queue.
-    - Check if the voxel is marked.
+    - Check if the voxel is marked by the current light id (`mark_value & (1 << current_light_id) != 0`).
     - If it is marked, stop here, else continue.
-    - Mark the voxel.
+    - Mark the voxel with the current light id (`mark_value |= (1 << current_light_id)`).
     - Add the light value to the current voxel light value.
-    - For each neighbor of the current voxel:
-        - If the neighbor is not marked:
+    - For each neighbor of the current voxel: *(see the definition of neighbor just below)*
+        - If the neighbor is not marked by the current light id (`mark_value & (1 << current_light_id) == 0`):
             - Add the neighbor to the queue with `new light value = current voxel light value * light diffusion strength`.
 
+
+A neighbor is designated as:
+
+- If the source is an empty voxel or transparent voxel, its neighbors are the 6 voxels that share a face with it.
+- If the source is a non empty voxel, it has no neighbors.
