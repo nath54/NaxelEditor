@@ -132,6 +132,8 @@ The type `voxel_value` represents a voxel value, it can be represented in variou
 
 - `"default_color"` (Optional, `cl`, Default: `"#000000"`): The default color of the naxel object.
 - `"color_palette"` (`dict[str | int, cl]`, Default: `{}`): The color palette of the naxel object.
+- `"grid_thickness"` (Optional, `int`, Default: `0`): The thickness of the grid lines.
+- `"grid_color"` (Optional, `cl`, Default: `"#000000"`): The color of the grid lines.
 
 #### Non-animated Naxel Object
 
