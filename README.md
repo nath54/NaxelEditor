@@ -54,7 +54,7 @@ The type `cl` represents a color, it can be either `str`, `int` or `tuple[int, i
 * If the value is a dictionary, **none of its sub-color types can either be a dictionary**, and it must have a key `type` with the values:
     * `"gradient_lst"`: It is a gradient color, and the colors and positions are in 2 separated lists.
         * `"colors"` (Required, `list[cl]`): The colors of the gradient.
-        * `"positions"` (Optional, `list[pos]`, Default: `None`): The positions of the colors in the gradient.
+        * `"positions"` (Required, `list[pos]`): The positions of the colors in the gradient.
         * `"interpolation"` (Optional, `str`, Default: `"linear"`): The interpolation of the gradient, it can be `"linear"` or `"cubic"`.
     * `"gradient_dict"`: It is a gradient color, and the colors and positions are in a dictionary.
         * `"colors"` (Required, `dict[pos, cl]`): The key are the position and the value is the color.
