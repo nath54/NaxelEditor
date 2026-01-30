@@ -1,3 +1,5 @@
+from typing import Any
+
 from .pos import Pos
 from .color import Color
 
@@ -7,6 +9,11 @@ class VoxelValue:
     def __init__(self) -> None:
 
         pass
+
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {}
+
 
 
 class VoxelValueColor(VoxelValue):
@@ -20,6 +27,10 @@ class VoxelValueColor(VoxelValue):
 
         self.color: Color = color
 
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return self.color.export_to_lst()
+
 
 class VoxelValueFromPalette(VoxelValue):
 
@@ -31,6 +42,10 @@ class VoxelValueFromPalette(VoxelValue):
         super().__init__()
 
         self.palette_key: str | int = palette_key
+
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return self.palette_key
 
 
 class VoxelValueImportVoxel(VoxelValue):
@@ -46,6 +61,14 @@ class VoxelValueImportVoxel(VoxelValue):
         self.path: str = path
         self.position: Pos = position
 
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "import_voxel",
+            "path": self.path,
+            "position": self.position.export_to_dict()
+        }
+
 
 class VoxelValueShape(VoxelValue):
 
@@ -57,8 +80,16 @@ class VoxelValueShape(VoxelValue):
 
         super().__init__()
 
-        self.position: Pos = position
         self.color: Color = color
+        self.position: Pos = position
+
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict()
+        }
 
 
 class VoxelValueShapePoint(VoxelValueShape):
@@ -70,6 +101,14 @@ class VoxelValueShapePoint(VoxelValueShape):
     ) -> None:
 
         super().__init__(color, position)
+
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_point",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict()
+        }
 
 
 class VoxelValueShapeLine(VoxelValueShape):
@@ -84,6 +123,15 @@ class VoxelValueShapeLine(VoxelValueShape):
         super().__init__(color, position)
 
         self.position2: Pos = position2
+
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_line",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict(),
+            "position2": self.position2.export_to_dict(),
+        }
 
 
 class VoxelValueShapeTriangle(VoxelValueShape):
@@ -101,6 +149,16 @@ class VoxelValueShapeTriangle(VoxelValueShape):
         self.position2: Pos = position2
         self.position3: Pos = position3
 
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_triangle",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict(),
+            "position2": self.position2.export_to_dict(),
+            "position3": self.position3.export_to_dict()
+        }
+
 
 class VoxelValueShapeCircle(VoxelValueShape):
 
@@ -117,6 +175,16 @@ class VoxelValueShapeCircle(VoxelValueShape):
         self.radius: int = radius
         self.axis: str = axis
 
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_circle",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict(),
+            "radius": self.radius,
+            "axis": self.axis
+        }
+
 
 class VoxelValueShapeCube(VoxelValueShape):
 
@@ -130,6 +198,15 @@ class VoxelValueShapeCube(VoxelValueShape):
         super().__init__(color, position)
 
         self.size: int = size
+
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_cube",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict(),
+            "size": self.size
+        }
 
 
 class VoxelValueShapeRect(VoxelValueShape):
@@ -145,6 +222,15 @@ class VoxelValueShapeRect(VoxelValueShape):
 
         self.position2: Pos = position2
 
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_rect",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict(),
+            "position2": self.position2.export_to_dict()
+        }
+
 
 class VoxelValueShapeSphere(VoxelValueShape):
 
@@ -158,6 +244,15 @@ class VoxelValueShapeSphere(VoxelValueShape):
         super().__init__(color, position)
 
         self.radius: int = radius
+
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_sphere",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict(),
+            "radius": self.radius
+        }
 
 
 class VoxelValueShapeCylinder(VoxelValueShape):
@@ -177,6 +272,17 @@ class VoxelValueShapeCylinder(VoxelValueShape):
         self.height: int = height
         self.axis: str = axis
 
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_cylinder",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict(),
+            "radius": self.radius,
+            "height": self.height,
+            "axis": self.axis
+        }
+
 
 class VoxelValueShapePolygon(VoxelValueShape):
 
@@ -190,4 +296,16 @@ class VoxelValueShapePolygon(VoxelValueShape):
         super().__init__(color, position)
 
         self.polygon: list[Pos] = polygon
+
+    def export_to_dictable(self) -> Any | dict[str, Any]:
+
+        return {
+            "type": "shape_polygon",
+            "color": self.color.export_to_lst(),
+            "position": self.position.export_to_dict(),
+            "polygon": [
+                p.export_to_dict()
+                for p in self.polygon
+            ]
+        }
 

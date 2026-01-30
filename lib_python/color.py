@@ -1,4 +1,4 @@
-from .utils import clamp, between
+from .utils_numeric import clamp, between
 from .vec import Vec3
 
 class Color:
@@ -15,6 +15,10 @@ class Color:
         self.g: int = g
         self.b: int = b
         self.a: int = a
+
+    def export_to_lst(self) -> list[int]:
+
+        return [self.r, self.g, self.b, self.a]
 
     def color_at_pixel(
         self,

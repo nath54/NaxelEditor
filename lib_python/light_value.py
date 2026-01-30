@@ -12,6 +12,10 @@ class LightValue:
         self.g: float = g
         self.b: float = b
 
+    def export_to_lst(self) -> list[float]:
+
+        return [self.r, self.g, self.b]
+
     def add(self, lv: "LightValue") -> "LightValue":
 
         return LightValue(

@@ -1,12 +1,13 @@
-from typing import Optional
+from typing import Optional, Any
 
 from .vec import Vec3
 from .color import Color
 from .color_palette import ColorPalette
-from .voxel_value import VoxelValue
+from .voxel_value import VoxelValue, VoxelValueColor, VoxelValueFromPalette
 from .light_value import LightValue
 from .environment import Environment
 from .camera import Camera
+from .utils_dicts import merge_dicts
 
 
 class NaxelGeneralData:
@@ -48,7 +49,7 @@ class NaxelDataFrame:
 
         # -- Light Value --
         light_value_dict: Optional[dict[Vec3, LightValue]] = None,
-        light_value_list: Optional[list[LightValue]] = None,
+        light_value_list: Optional[list[tuple[Vec3, LightValue]]] = None,
         light_value_grid: Optional[list[list[list[LightValue]]]] = None,
 
     ) -> None:
@@ -71,8 +72,80 @@ class NaxelDataFrame:
 
         # -- Light Value --
         self.light_value_dict: Optional[dict[Vec3, LightValue]] = light_value_dict
-        self.light_value_list: Optional[list[LightValue]] = light_value_list
+        self.light_value_list: Optional[list[tuple[Vec3, LightValue]]] = light_value_list
         self.light_value_grid: Optional[list[list[list[LightValue]]]] = light_value_grid
+
+    def export_to_dict(self, as_a_frame: bool = False) -> dict[str, Any]:
+
+        dict_res: dict[str, Any] = {}
+
+        if as_a_frame:
+            dict_res["frame_id"] = self.frame_id
+            dict_res["frame_duration"] = self.frame_duration
+
+        if self.voxels_dict is not None:
+            dict_res["voxels_dict"] = {
+                k.export_to_str(): v.export_to_dictable()
+                for k, v in self.voxels_dict.items()
+            }
+
+        if self.voxels_list is not None:
+            dict_res["voxels_list"] = [
+                v.export_to_dictable()
+                for v in self.voxels_list
+                if not isinstance(v, VoxelValueColor) and not isinstance(v, VoxelValueFromPalette)
+            ]
+
+        if self.voxels_grid is not None:
+
+            dict_res["voxels_list"] = []
+
+            for grid_level in self.voxels_grid:
+
+                for grid_level2 in grid_level:
+
+                    for v in grid_level2:
+
+                        if not isinstance(v, VoxelValueColor) and not isinstance(v, VoxelValueFromPalette):
+                            v.export_to_dictable()
+
+        if self.light_emission_dict is not None:
+            dict_res["light_emission_dict"] = {
+                k.export_to_str(): v.export_to_lst()
+                for k, v in self.light_emission_dict.items()
+            }
+
+        if self.light_emission_items is not None:
+            dict_res["light_emission_items"] = [
+                (k.export_to_str(), v.export_to_lst())
+                for k, v in self.light_emission_items
+            ]
+
+        if self.light_value_dict is not None:
+            dict_res["light_value_dict"] = {
+                k.export_to_str(): v.export_to_lst()
+                for k, v in self.light_value_dict.items()
+            }
+
+        if self.light_value_list is not None:
+            dict_res["light_value_items"] = [
+                (k.export_to_str(), v.export_to_lst())
+                for k, v in self.light_value_list
+            ]
+
+        if self.light_value_grid is not None:
+
+            dict_res["light_value_grid"] = []
+
+            for grid_level in self.light_value_grid:
+
+                for grid_level2 in grid_level:
+
+                    for v in grid_level2:
+
+                        v.export_to_lst()
+
+        return dict_res
 
 
 class Naxel:
@@ -125,4 +198,59 @@ class Naxel:
 
         # --- Camera ---
         self.camera: Camera = camera
+
+    def export_to_dict(self) -> dict[str, Any]:
+
+        res: dict[str, Any] = {
+            # --- Metadata ---
+            "name": self.name,
+            "author": self.author,
+            "description": self.description,
+            "date_created": self.date_created,
+            "date_modified": self.date_modified,
+            "tags": self.tags,
+            "license": self.license,
+            "is_post_processed": self.is_post_processed,
+
+            # --- General Data ---
+            "default_color": self.general_data.default_color,
+            "color_palette": self.general_data.color_palette,
+            "grid_thickness": self.general_data.grid_thickness,
+            "grid_color": self.general_data.grid_color,
+        }
+
+        if len(self.data_frames) == 0:
+
+            pass
+
+        elif len(self.data_frames) == 1:
+
+            res = merge_dicts(
+                res,
+                self.data_frames[0].export_to_dict()
+            )
+
+        else:
+
+            res = merge_dicts(
+                res,
+                {
+                    "frames": [
+                        df.export_to_dict(True)
+                        for df in self.data_frames
+                    ]
+                }
+            )
+
+        res = merge_dicts(
+            res,
+            self.environment.export_to_dict()
+        )
+
+        res = merge_dicts(
+            res,
+            self.camera.export_to_dict()
+        )
+
+        return res
 

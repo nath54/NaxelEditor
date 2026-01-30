@@ -14,6 +14,10 @@ class Vec3:
         self.y: int | float = y
         self.z: int | float = z
 
+    def export_to_str(self) -> str:
+
+        return f"{self.x}, {self.y}, {self.z}"
+
     def dist(
         self,
         v: "Vec3"
