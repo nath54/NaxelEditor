@@ -247,4 +247,4 @@ No light algorithm will be used, the light will be rendered as is.
 A neighbor is designated as:
 
 - If the source is an empty voxel or transparent voxel, its neighbors are the 6 voxels that share a face with it.
-- If the source is a non empty voxel, it has no neighbors.
+- If the source is a non empty opaque voxel, it has no neighbors.
