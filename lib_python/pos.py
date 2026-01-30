@@ -3,7 +3,7 @@ from typing import Optional
 from .vec import Vec3
 
 
-class NaxelPos:
+class Pos:
 
     def __init__(
         self,

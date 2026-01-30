@@ -1,7 +1,7 @@
-from .utils import clamp
+from .utils import clamp, between
 from .vec import Vec3
 
-class NaxelColor:
+class Color:
 
     def __init__(
         self,
@@ -31,9 +31,9 @@ class NaxelColor:
     def mult_factor(
         self,
         value: float
-    ) -> "NaxelColor":
+    ) -> "Color":
 
-        return NaxelColor(
+        return Color(
             r = int(self.r * value),
             g = int(self.r * value),
             b = int(self.r * value),
@@ -42,10 +42,10 @@ class NaxelColor:
 
     def add_color(
         self,
-        cl: "NaxelColor"
-    ) -> "NaxelColor":
+        cl: "Color"
+    ) -> "Color":
 
-        return NaxelColor(
+        return Color(
             r = self.r + cl.r,
             g = self.g + cl.g,
             b = self.b + cl.b,
@@ -53,15 +53,15 @@ class NaxelColor:
         )
 
 
-class NaxelColorGradient(NaxelColor):
+class ColorGradient(Color):
 
     def __init__(
         self,
-        colors: list[NaxelColor],
-        positions: list[Vec3],
+        colors: list[Color] = [],
+        positions: list[Vec3] = [],
     ) -> None:
 
-        self.colors: list[NaxelColor] = colors
+        self.colors: list[Color] = colors
         self.positions: list[Vec3] = positions
 
     def color_at_pixel(
@@ -69,11 +69,11 @@ class NaxelColorGradient(NaxelColor):
         xyz: Vec3
     ) -> tuple[int, int, int, int]:
 
-        final_color: NaxelColor = NaxelColor()
+        final_color: Color = Color()
 
         dist_tot: float = 0
 
-        c: NaxelColor
+        c: Color
         p: Vec3
 
         for c, p in zip(self.colors, self.positions):
@@ -90,6 +90,58 @@ class NaxelColorGradient(NaxelColor):
 
             final_color = final_color.add_color(tmp_color)
 
-        final_color.mult_factor( 1 / dist_tot )
+        if abs(dist_tot) > 1e-6:
+            final_color.mult_factor( 1 / dist_tot )
 
         return final_color.color_at_pixel(xyz)
+
+
+
+class ColorZone:
+
+    def __init__(
+        self,
+        color: Color,
+        position1: Vec3,
+        position2: Vec3
+    ) -> None:
+
+        self.color: Color = color
+        self.pos1: Vec3 = position1
+        self.pos2: Vec3 = position2
+
+    def check_in_zone(
+        self,
+        v: Vec3
+    ) -> bool:
+
+        return between(v.x, self.pos1.x, self.pos2.x) \
+           and between(v.y, self.pos1.y, self.pos2.y) \
+           and between(v.z, self.pos1.z, self.pos2.z)
+
+
+class ColorZones(Color):
+
+    def __init__(
+        self,
+        default_color: Color = Color(),
+        zones: list[ColorZone] = []
+    ) -> None:
+
+        self.default_color: Color = default_color
+        self.zones: list[ColorZone] = zones
+
+    def color_at_pixel(
+        self,
+        xyz: Vec3
+    ) -> tuple[int, int, int, int]:
+
+        z: ColorZone
+
+        for z in self.zones:
+
+            if z.check_in_zone(xyz):
+
+                return z.color.color_at_pixel(xyz)
+
+        return self.default_color.color_at_pixel(xyz)

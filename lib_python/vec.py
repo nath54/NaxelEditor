@@ -1,16 +1,18 @@
+from typing import Any
+
 
 class Vec3:
 
     def __init__(
         self,
-        x: int,
-        y: int,
-        z: int
+        x: int | float,
+        y: int | float,
+        z: int | float,
     ) -> None:
 
-        self.x: int = x
-        self.y: int = y
-        self.z: int = z
+        self.x: int | float = x
+        self.y: int | float = y
+        self.z: int | float = z
 
     def dist(
         self,
@@ -30,3 +32,18 @@ class Vec3:
         return (self.x == v.x) \
            and (self.y == v.y) \
            and (self.z == v.z)
+
+    def __eq__(self, other: Any) -> bool:
+
+        if not isinstance(other, Vec3):
+            return False
+
+        return self.check_equal(other)
+
+    def __str__(self) -> str:
+
+        return f"{self.x}_{self.y}_{self.z}"
+
+    def __hash__(self) -> int:
+
+        return hash(self.__str__())

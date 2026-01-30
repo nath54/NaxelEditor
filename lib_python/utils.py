@@ -12,3 +12,15 @@ def clamp(
 
     return value
 
+
+def between(
+    value: int | float,
+    side_1: int | float,
+    side_2: int | float,
+) -> bool:
+
+    if side_2 < side_1:
+
+        return value >= side_2 and value <= side_1
+
+    return value >= side_1 and value <= side_2

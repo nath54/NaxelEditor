@@ -192,7 +192,7 @@ If the environment type is `"skybox"`, the environment will be a skybox and must
 
 - `"camera_position"` (Optional, `pos`, Default: `(0, 0, 0)`): The initial position of the camera.
 - `"camera_rotation"` (Optional, `tuple[float, float, float]`, Default: `(0, 0, 0)`): The initial rotation of the camera.
-- `"camera_fov"` (Optional, `int`, Default: `70`): The field of view of the camera.
+- `"camera_fov"` (Optional, `float`, Default: `70`): The field of view of the camera.
 - `"camera_clip_start"` (Optional, `float`, Default: `0.1`): The near clip plane of the camera.
 - `"camera_clip_end"` (Optional, `float`, Default: `100`): The far clip plane of the camera.
 - `"locked_camera_movement"` (Optional, `bool`, Default: `False`): Whether the camera movement is locked.
