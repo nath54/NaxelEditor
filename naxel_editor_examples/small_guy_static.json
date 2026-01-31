@@ -12,8 +12,8 @@
       "type": "shape_cube",
       "position": [
         0,
-        6,
-        0
+        0,
+        6
       ],
       "size": 3,
       "color": "skin"
@@ -22,13 +22,13 @@
       "type": "shape_rect",
       "position": [
         0,
-        9,
-        0
+        0,
+        9
       ],
       "position2": [
         2,
-        9,
-        2
+        2,
+        9
       ],
       "color": "hair"
     },
@@ -36,13 +36,13 @@
       "type": "shape_rect",
       "position": [
         -1,
-        3,
-        0
+        0,
+        3
       ],
       "position2": [
         3,
-        5,
-        2
+        2,
+        5
       ],
       "color": "shirt"
     },
@@ -50,8 +50,8 @@
       "type": "shape_rect",
       "position": [
         0,
-        1,
-        0
+        0,
+        1
       ],
       "position2": [
         0,
@@ -64,8 +64,8 @@
       "type": "shape_rect",
       "position": [
         2,
-        1,
-        0
+        0,
+        1
       ],
       "position2": [
         2,
@@ -78,8 +78,8 @@
       "type": "shape_point",
       "position": [
         0,
-        0,
-        1
+        1,
+        0
       ],
       "color": "shoes"
     },
@@ -87,8 +87,8 @@
       "type": "shape_point",
       "position": [
         2,
-        0,
-        1
+        1,
+        0
       ],
       "color": "shoes"
     }
@@ -102,8 +102,8 @@
   ],
   "camera_position": [
     1,
-    5,
-    -20
+    -15,
+    5
   ],
   "camera_rotation": [
     0,
