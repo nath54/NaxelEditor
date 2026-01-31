@@ -1,0 +1,35 @@
+/**
+ * lib_naxel.css - Styling for Naxel renderer
+ */
+
+/* Container for naxel canvas */
+[data-naxel] {
+    display: inline-block;
+    background: #1a1a2e;
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* The canvas element */
+.naxel-canvas {
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* Optional: scale up for visibility */
+.naxel-canvas.scale-2x {
+    width: 128px;
+    height: 128px;
+}
+
+.naxel-canvas.scale-4x {
+    width: 256px;
+    height: 256px;
+}
+
+.naxel-canvas.scale-8x {
+    width: 512px;
+    height: 512px;
+}

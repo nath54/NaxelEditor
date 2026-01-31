@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naxel Editor - Demo</title>
+
+    <!-- Naxel Library CSS -->
+    <link rel="stylesheet" href="../lib_js_naive/lib_naxel.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            color: #fff;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .demo-section {
+            margin-bottom: 50px;
+        }
+
+        .demo-section h2 {
+            font-size: 1.4rem;
+            color: #a5b4fc;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .naxel-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+        }
+
+        .naxel-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .naxel-item span {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        /* Scale canvases for visibility */
+        [data-naxel] .naxel-canvas {
+            width: 256px;
+            height: 256px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #4a5568;
+            margin: 40px auto;
+            max-width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🎮 Naxel Editor Demo</h1>
+
+    <!-- Static Renders -->
+    <div class="demo-section">
+        <h2>📷 Static Renders</h2>
+        <div class="naxel-gallery">
+
+            <div class="naxel-item">
+                <div data-naxel="grey_cube"></div>
+                <span>Grey Cube</span>
+            </div>
+
+            <div class="naxel-item">
+                <div data-naxel="small_guy"></div>
+                <span>Small Guy</span>
+            </div>
+
+            <div class="naxel-item">
+                <div data-naxel="rgb_shapes"></div>
+                <span>RGB Shapes</span>
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Animated Rotations -->
+    <div class="demo-section">
+        <h2>🔄 Animated Rotation (Auto-Centered)</h2>
+        <div class="naxel-gallery">
+
+            <div class="naxel-item">
+                <div data-naxel="grey_cube" data-naxel-animated></div>
+                <span>Grey Cube (Rotating)</span>
+            </div>
+
+            <div class="naxel-item">
+                <div data-naxel="small_guy" data-naxel-animated></div>
+                <span>Small Guy (Rotating)</span>
+            </div>
+
+            <div class="naxel-item">
+                <div data-naxel="rgb_shapes" data-naxel-animated></div>
+                <span>RGB Shapes (Rotating)</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Load Naxel Library Scripts (order matters!) -->
+    <script src="../lib_js_naive/vec.js"></script>
+    <script src="../lib_js_naive/color.js"></script>
+    <script src="../lib_js_naive/camera.js"></script>
+    <script src="../lib_js_naive/environment.js"></script>
+    <script src="../lib_js_naive/voxel_grid.js"></script>
+    <script src="../lib_js_naive/ray.js"></script>
+    <script src="../lib_js_naive/ray_marcher.js"></script>
+    <script src="../lib_js_naive/naxel_loader.js"></script>
+    <script src="../lib_js_naive/renderer.js"></script>
+    <script src="../lib_js_naive/lib_naxel.js"></script>
+
+    <script>
+        // Define naxel objects
+        window.naxel_objects["grey_cube"] = {
+            name: "Grey Cube",
+            voxels_dict: {
+                "0,0,0": "grey"
+            },
+            environment_type: "color",
+            environment_color: [50, 50, 80, 255],
+            camera_position: [0, -8, 0],
+            camera_rotation: [0, 0, 0],
+            camera_focal: 5,
+            camera_width: 64,
+            camera_height: 64,
+            camera_pixel_size: 0.3
+        };
+
+        window.naxel_objects["small_guy"] = {
+            name: "Small Guy",
+            color_palette: {
+                skin: "#FFE0BD",
+                hair: "#4B3621",
+                shirt: "red",
+                jeans: "blue",
+                shoes: "black"
+            },
+            voxels_list: [
+                { type: "shape_cube", position: [0, 6, 0], size: 3, color: "skin" },
+                { type: "shape_rect", position: [0, 9, 0], position2: [2, 9, 2], color: "hair" },
+                { type: "shape_rect", position: [-1, 3, 0], position2: [3, 5, 2], color: "shirt" },
+                { type: "shape_rect", position: [0, 1, 0], position2: [0, 2, 2], color: "jeans" },
+                { type: "shape_rect", position: [2, 1, 0], position2: [2, 2, 2], color: "jeans" },
+                { type: "shape_point", position: [0, 0, 1], color: "shoes" },
+                { type: "shape_point", position: [2, 0, 1], color: "shoes" }
+            ],
+            environment_type: "color",
+            environment_color: [100, 150, 200, 255],
+            camera_position: [1, -25, 5],
+            camera_rotation: [0, 0, 0],
+            camera_focal: 20,
+            camera_width: 64,
+            camera_height: 64,
+            camera_pixel_size: 0.3
+        };
+
+        window.naxel_objects["rgb_shapes"] = {
+            name: "RGB Shapes",
+            voxels_list: [
+                { type: "shape_sphere", position: [-3, 0, 0], radius: 2, color: "red" },
+                { type: "shape_cube", position: [0, 0, -1], size: 3, color: "green" },
+                { type: "shape_sphere", position: [5, 0, 0], radius: 2, color: "blue" }
+            ],
+            environment_type: "skybox",
+            sky_color: "#87CEEB",
+            ground_color: "#1E4D2B",
+            camera_position: [1, -20, 3],
+            camera_rotation: [0, 0, 0],
+            camera_focal: 15,
+            camera_width: 64,
+            camera_height: 64,
+            camera_pixel_size: 0.3
+        };
+
+        // Render all naxel elements (static and animated)
+        render_all_naxels();
+    </script>
+</body>
+
+</html>
