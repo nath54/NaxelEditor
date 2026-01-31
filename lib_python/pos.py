@@ -1,6 +1,6 @@
 from typing import Optional, Any
 
-from .vec import Vec3
+from .vec import Vec3, parse_vec3
 
 
 class Pos:
