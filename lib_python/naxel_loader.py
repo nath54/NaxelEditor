@@ -145,20 +145,26 @@ def load_naxel(json_dict: dict[str, Any]) -> Naxel:
     # --- Camera Data ---
     camera_position: Vec3 = parse_vec3(json_dict.get("camera_position", [0, 0, 0]))
     camera_rotation: Vec3 = parse_vec3(json_dict.get("camera_rotation", [0, 0, 0]))
-    camera_fov: float = json_dict.get("camera_fov", 70)
+    camera_focal: float = json_dict.get("camera_focal", 70)
     camera_clip_start: float = json_dict.get("camera_clip_start", 0.001)
     camera_clip_end: float = json_dict.get("camera_clip_end", 100)
     locked_camera_movement: bool = json_dict.get("locked_camera_movement", False)
     locked_camera_rotation: bool = json_dict.get("locked_camera_rotation", False)
+    camera_width: int = json_dict.get("camera_width", 32)
+    camera_height: int = json_dict.get("camera_height", 32)
+    camera_pixel_size: float = json_dict.get("camera_pixel_size", 0.1)
 
     camera_data: Camera = Camera(
         camera_position,
         camera_rotation,
-        camera_fov,
+        camera_focal,
         camera_clip_start,
         camera_clip_end,
         locked_camera_movement,
         locked_camera_rotation,
+        camera_width,
+        camera_height,
+        camera_pixel_size,
     )
 
     # --- Environment Data ---

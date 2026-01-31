@@ -3,28 +3,84 @@
   "voxels_list": [
     {
       "type": "shape_triangle",
-      "position": [0, 0, 0],
-      "position2": [10, 0, 0],
-      "position3": [5, 10, 0],
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "position2": [
+        10,
+        0,
+        0
+      ],
+      "position3": [
+        5,
+        10,
+        0
+      ],
       "color": "white"
     },
     {
       "type": "shape_line",
-      "position": [0, 0, 0],
-      "position2": [10, 0, 0],
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "position2": [
+        10,
+        0,
+        0
+      ],
       "color": "red"
     },
     {
       "type": "shape_line",
-      "position": [10, 0, 0],
-      "position2": [5, 10, 0],
+      "position": [
+        10,
+        0,
+        0
+      ],
+      "position2": [
+        5,
+        10,
+        0
+      ],
       "color": "green"
     },
     {
       "type": "shape_line",
-      "position": [5, 10, 0],
-      "position2": [0, 0, 0],
+      "position": [
+        5,
+        10,
+        0
+      ],
+      "position2": [
+        0,
+        0,
+        0
+      ],
       "color": "blue"
     }
-  ]
+  ],
+  "environment_type": "color",
+  "environment_color": [
+    30,
+    30,
+    50,
+    255
+  ],
+  "camera_position": [
+    5,
+    5,
+    -25
+  ],
+  "camera_rotation": [
+    0,
+    0,
+    0
+  ],
+  "camera_focal": 20,
+  "camera_clip_start": 0.1,
+  "camera_clip_end": 100
 }

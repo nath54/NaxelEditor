@@ -4,17 +4,33 @@
   "light_algorithm": "simple_diffusion",
   "sky_color": "#87CEEB",
   "ground_color": "#1E4D2B",
-  "sun_direction": [1, -1, 0.5],
+  "sun_direction": [
+    1,
+    -1,
+    0.5
+  ],
   "voxels_list": [
     {
       "type": "shape_rect",
-      "position": [-20, 0, -20],
-      "position2": [20, 0, 20],
+      "position": [
+        -20,
+        0,
+        -20
+      ],
+      "position2": [
+        20,
+        0,
+        20
+      ],
       "color": "green"
     },
     {
       "type": "shape_cylinder",
-      "position": [0, 1, 0],
+      "position": [
+        0,
+        1,
+        0
+      ],
       "axis": "xz",
       "radius": 1,
       "height": 5,
@@ -22,15 +38,36 @@
     },
     {
       "type": "shape_sphere",
-      "position": [0, 7, 0],
+      "position": [
+        0,
+        7,
+        0
+      ],
       "radius": 3,
       "color": "#2E7D32"
     },
     {
       "type": "shape_sphere",
-      "position": [5, 1, 5],
+      "position": [
+        5,
+        1,
+        5
+      ],
       "radius": 1,
       "color": "#43A047"
     }
-  ]
+  ],
+  "camera_position": [
+    0,
+    10,
+    -35
+  ],
+  "camera_rotation": [
+    0,
+    0,
+    0
+  ],
+  "camera_focal": 25,
+  "camera_clip_start": 0.1,
+  "camera_clip_end": 200
 }

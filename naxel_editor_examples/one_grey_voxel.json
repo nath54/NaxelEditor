@@ -5,5 +5,23 @@
         "0,0,0": "grey"
     },
     "environment_type": "color",
-    "environment_color": [0, 0, 0, 0]
+    "environment_color": [
+        50,
+        50,
+        80,
+        255
+    ],
+    "camera_position": [
+        0,
+        -10,
+        0
+    ],
+    "camera_rotation": [
+        0,
+        0,
+        0
+    ],
+    "camera_focal": 5,
+    "camera_clip_start": 0.1,
+    "camera_clip_end": 100
 }
