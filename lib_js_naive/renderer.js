@@ -114,7 +114,7 @@ class NaiveRenderer {
         const center = new Vec3(
             (min.x + max.x) / 2,
             (min.y + max.y) / 2,
-            (min.z + max.z) / 2
+            0 //(min.z + max.z) / 2
         );
 
         const dx = max.x - min.x;

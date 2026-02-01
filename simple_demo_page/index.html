@@ -88,8 +88,8 @@
         <div class="naxel-gallery">
 
             <div class="naxel-item">
-                <div data-naxel="grey_cube"></div>
-                <span>Grey Cube</span>
+                <div data-naxel="triangle"></div>
+                <span>Triangle</span>
             </div>
 
             <div class="naxel-item">
@@ -113,8 +113,8 @@
         <div class="naxel-gallery">
 
             <div class="naxel-item">
-                <div data-naxel="grey_cube" data-naxel-animated></div>
-                <span>Grey Cube (Rotating)</span>
+                <div data-naxel="triangle" data-naxel-animated></div>
+                <span>Triangle (Rotating)</span>
             </div>
 
             <div class="naxel-item">
@@ -144,19 +144,96 @@
 
     <script>
         // Define naxel objects
-        window.naxel_objects["grey_cube"] = {
-            name: "Grey Cube",
-            voxels_dict: {
-                "0,0,0": "grey"
-            },
-            environment_type: "color",
-            environment_color: [50, 50, 80, 255],
-            camera_position: [0, -8, 0],
-            camera_rotation: [0, 0, 0],
-            camera_focal: 5,
-            camera_width: 64,
-            camera_height: 64,
-            camera_pixel_size: 0.3
+        window.naxel_objects["triangle"] = {
+            "name": "RGB Triangle",
+            "voxels_list": [
+                {
+                    "type": "shape_triangle",
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "position2": [
+                        10,
+                        0,
+                        0
+                    ],
+                    "position3": [
+                        5,
+                        0,
+                        10
+                    ],
+                    "color": [
+                        255,
+                        255,
+                        255,
+                        255
+                    ]
+                },
+                {
+                    "type": "shape_line",
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "position2": [
+                        10,
+                        0,
+                        0
+                    ],
+                    "color": "red"
+                },
+                {
+                    "type": "shape_line",
+                    "position": [
+                        10,
+                        0,
+                        0
+                    ],
+                    "position2": [
+                        5,
+                        0,
+                        10
+                    ],
+                    "color": "green"
+                },
+                {
+                    "type": "shape_line",
+                    "position": [
+                        5,
+                        0,
+                        10
+                    ],
+                    "position2": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "color": "blue"
+                }
+            ],
+            "environment_type": "color",
+            "environment_color": [
+                30,
+                30,
+                50,
+                0
+            ],
+            "camera_position": [
+                5,
+                -10,
+                5
+            ],
+            "camera_rotation": [
+                0,
+                0,
+                0
+            ],
+            "camera_focal": 20,
+            "camera_clip_start": 0.1,
+            "camera_clip_end": 100
         };
 
         window.naxel_objects["small_guy"] = {

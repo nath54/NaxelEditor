@@ -15,10 +15,15 @@
       ],
       "position3": [
         5,
-        10,
-        0
+        0,
+        10
       ],
-      "color": "white"
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ]
     },
     {
       "type": "shape_line",
@@ -43,8 +48,8 @@
       ],
       "position2": [
         5,
-        10,
-        0
+        0,
+        10
       ],
       "color": "green"
     },
@@ -52,8 +57,8 @@
       "type": "shape_line",
       "position": [
         5,
-        10,
-        0
+        0,
+        10
       ],
       "position2": [
         0,
@@ -68,12 +73,12 @@
     30,
     30,
     50,
-    255
+    0
   ],
   "camera_position": [
     5,
-    5,
-    -25
+    -10,
+    5
   ],
   "camera_rotation": [
     0,
