@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naxel Editor</title>
+
+    <!-- Naxel Library CSS -->
+    <link rel="stylesheet" href="../lib_js_naive/lib_naxel.css">
+
+    <!-- This webpage CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <!-- Global Navigation Menu -->
+    <div id="main-navigation">
+
+        <div class="main-navigation-option">
+
+            <button
+                id="bt-subpage-edit"
+                class="bt-subpage"
+                onclick="go_to_page('subpage-edit');"
+                >Edit
+            </button>
+
+        </div>
+
+        <div class="main-navigation-option">
+
+            <button
+                id="bt-subpage-edit"
+                class="bt-subpage"
+                onclick="go_to_page('subpage-view');"
+                >View
+            </button>
+
+        </div>
+
+        <div class="main-navigation-option">
+
+            <button
+                id="bt-subpage-edit"
+                class="bt-subpage"
+                onclick="go_to_page('subpage-json');"
+                >JSON
+            </button>
+
+        </div>
+
+    </div>
+
+    <div>
+
+        <!-- Edit subpage -->
+        <div id="subpage-edit" style="display: flex;" class="subpage">
+
+        </div>
+
+        <!-- View subpage -->
+        <div id="subpage-view" style="display: none;" class="subpage">
+
+        </div>
+
+        <!-- JSON subpage -->
+        <div id="subpage-json" style="display: none;" class="subpage">
+
+        </div>
+
+    </div>
+
+    <!-- Base scripts for this web page -->
+    <script src="src/app_navigation.js"></script>
+
+    <!-- Load Naxel Library Scripts (order matters!) -->
+    <script src="../lib_js_naive/vec.js"></script>
+    <script src="../lib_js_naive/color.js"></script>
+    <script src="../lib_js_naive/camera.js"></script>
+    <script src="../lib_js_naive/environment.js"></script>
+    <script src="../lib_js_naive/voxel_grid.js"></script>
+    <script src="../lib_js_naive/ray.js"></script>
+    <script src="../lib_js_naive/ray_marcher.js"></script>
+    <script src="../lib_js_naive/naxel_loader.js"></script>
+    <script src="../lib_js_naive/renderer.js"></script>
+    <script src="../lib_js_naive/lib_naxel.js"></script>
+
+</body>
+
+</html>
