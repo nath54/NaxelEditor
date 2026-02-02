@@ -42,11 +42,15 @@ There will be a small visualizer to indicate where the slice is and how it is ro
 
 There will be navigation buttons to update the slice position and rotation.
 
-### (A.4) Environment & Lights section
+### (A.4) Environment section
 
-Environment & Lights section
+Environment section
 
-### (A.5) Metadata Editor
+### (A.5) Lights section
+
+Lights section
+
+### (A.6) Metadata Editor
 
 A small editor part where you can edit the metadata of the current loaded naxel object (name, author, description, ...).
 
