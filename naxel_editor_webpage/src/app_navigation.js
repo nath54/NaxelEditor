@@ -1,6 +1,9 @@
 
 //
 window.not_available = [];
+window.current_compo = "simple_one_window";
+
+// Compos: "simple_one_window", "duo_vertical", "duo_horizontal", "trio_horizontal_2_1", "trio_vertical_2_1", "quadro"
 
 //
 function go_to_page(page_id){
@@ -39,12 +42,14 @@ function create_surface_navigation_node(surface_id){
     //
     var bt_compo = document.createElement("button");
     bt_compo.innerText = "comp";
+    bt_compo.setAttribute("onclick", "show_composition_menu_selection();");
     div_node.appendChild(bt_compo);
 
     //
     var select = document.createElement("select");
     select.style.display = "flex";
     select.style.flexGrow = 1;
+    select.style.textAlign = "center";
     div_node.appendChild(select);
 
     //
@@ -52,6 +57,7 @@ function create_surface_navigation_node(surface_id){
         
         var option = document.createElement("option");
         option.innerText = surface_menu;
+        option.style.textAlign = "center";
         option.classList.add( "option_surface_menu_"+surface_menu );
         option.setAttribute("onclick", "on_select_surface_menu( \""+surface_menu+"\", \""+surface_id+"\" )");
 
@@ -155,6 +161,25 @@ function on_select_surface_menu( surface_menu, surface_id ){
 function set_surface_menu( surface_menu, surface_id ){
 
     // TODO
+
+}
+
+//
+function show_composition_menu_selection(){
+
+    //
+    document.getElementById("composition_selection_menu").style.display = "flex";
+
+}
+
+//
+function on_composition_change(new_composition){
+
+    //
+    for(node of document.getElementsByClassName("")){
+        
+    }
+
 
 }
 

@@ -54,13 +54,14 @@
 
     </div>
 
-    <div>
+    <!-- Main subpages -->
+    <div id="main_subpages">
 
         <!-- Edit subpage -->
         <div id="subpage-edit" style="display: flex;" class="subpage">
 
             <!-- Configuration 1 surface -->
-            <div id="simple_one_window" style="display: flex" class="subpage_main">
+            <div id="simple_one_window" class="simple_one" style="display: flex" class="subpage_main">
 
                 <!-- Surface 1 -->
                 <div id="simple_one_window_surface" class="surface">
@@ -78,7 +79,7 @@
             </div>
 
             <!-- Configuration 2 surfaces positionnées verticalement -->
-            <div id="duo_vertical" style="display: none; flex-direction: column;">
+            <div id="duo_vertical" class="simple_one" class="comp_view" style="display: none; flex-direction: column;">
 
                 <!-- Surface 1 -->
                 <div id="duo_vertical_surface_1" class="surface">
@@ -94,7 +95,7 @@
                 </div>
 
                 <!-- Surface 2 -->
-                <div id="duo_vertical_surface_2" class="surface">
+                <div id="duo_vertical_surface_2" class="simple_one" class="surface">
 
                     <div class="surface_nav">
                         
@@ -109,7 +110,7 @@
             </div>
 
             <!-- Configuration 2 surfaces positionnées horizontalement -->
-            <div id="duo_horizontal" style="display: none; flex-direction: row;">
+            <div id="duo_horizontal" class="duo_horizontal" style="display: none; flex-direction: row;">
 
                 <!-- Surface 1 -->
                 <div id="duo_horizontal_surface_1" class="surface">
@@ -310,6 +311,39 @@
         <!-- JSON subpage -->
         <div id="subpage-json" style="display: none;" class="subpage">
 
+        </div>
+
+    </div>
+
+    <!-- Composition Selection -->
+    <div id="composition_selection_menu" style="display:none;">
+
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; margin: 2%; flex-grow: 1;">
+            
+            <div class="bt_composition_selection" onclick="on_composition_change('simple_one');">
+                Simple One
+            </div>
+
+            <div class="bt_composition_selection" onclick="on_composition_change('duo_horizontal');">
+                Duo Horizontal
+            </div>
+
+            <div class="bt_composition_selection" onclick="on_composition_change('duo_vertical');">
+                Duo Vertical
+            </div>
+
+            <div class="bt_composition_selection" onclick="on_composition_change('trio_horizontal_2_1');">
+                Trio Vertical 2 & 1
+            </div>
+
+            <div class="bt_composition_selection" onclick="on_composition_change('trio_vertical_2_1');">
+                Trio Horizontal 2 & 1
+            </div>
+
+            <div class="bt_composition_selection" onclick="on_composition_change('quadro');">
+                Quadro
+            </div>
+            
         </div>
 
     </div>

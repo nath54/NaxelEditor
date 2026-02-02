@@ -47,6 +47,32 @@ h1 {
 
 }
 
+#main_subpages{
+
+    position: absolute;
+    top: 8%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+}
+
+#composition_selection_menu{
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    position: absolute;
+    top: 5%;
+    bottom: 5%;
+    left: 5%;
+    right: 5%;
+
+    background-color: #24243e;
+
+    border: 2px solid #7777ac;
+    border-radius: 10px;
+}
+
 .main-navigation-option{
 
     display: inline-block;
@@ -118,4 +144,25 @@ hr {
     flex-grow: 1;
     width: auto;
     height: auto;
+}
+
+.bt_composition_selection{
+
+    width: 20%;
+    height: 20%;
+
+    padding: auto;
+    text-align: center;
+
+    background-color: #302b63;
+
+    border: 1px solid #7777ac;
+    border-radius: 5px;
+
+}
+.bt_composition_selection:hover{
+    background-color: #383862;
+}
+.bt_composition_selection:active{
+    background-color: #4a5568;
 }
