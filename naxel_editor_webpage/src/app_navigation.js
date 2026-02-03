@@ -3,6 +3,9 @@
 window.not_available = [];
 window.current_compo = "simple_one_window";
 
+// Registry to store menu assignments for each surface (without creating them)
+window.surface_menu_assignments = {};
+
 //
 window.surfaces_menus = {
     "none": "none",
@@ -232,11 +235,13 @@ function update_all_surface_menu_options(new_composition) {
 
 /*
 Function that is called when a user changes the menu of a surface.
+This now stores the assignment and only creates the menu if the surface is in the active composition.
 */
 function on_select_surface_menu(surface_menu, surface_id) {
 
     //
     surface_node = document.getElementById(surface_id);
+    if (!surface_node) return;
 
     //
     old_surface_menu = surface_node.getAttribute("data-surface-menu");
@@ -249,34 +254,64 @@ function on_select_surface_menu(surface_menu, surface_id) {
     //
     add_to_not_available(surface_menu);
 
-    //
-    set_surface_menu(surface_menu, surface_id);
+    // Store the assignment in registry
+    window.surface_menu_assignments[surface_id] = surface_menu;
 
-    //
+    // Store on the node
     surface_node.setAttribute("data-surface-menu", surface_menu);
 
+    // Only create the menu if this surface is in the currently active composition
+    const parentCompo = getParentComposition(surface_id);
+    if (parentCompo === window.current_compo) {
+        set_surface_menu(surface_menu, surface_id);
+    }
+
+    // Update select dropdown if it exists
+    const select_node = document.getElementById(surface_id + "_select");
+    if (select_node) {
+        select_node.value = surface_menu;
+    }
+}
+
+/**
+ * Get the parent composition ID for a surface
+ */
+function getParentComposition(surface_id) {
+    const surface = document.getElementById(surface_id);
+    if (!surface) return null;
+
+    let parent = surface.parentElement;
+    while (parent) {
+        if (Object.keys(window.composition_icons).includes(parent.id)) {
+            return parent.id;
+        }
+        parent = parent.parentElement;
+    }
+    return null;
 }
 
 /*
-Function to set the menu of a surface
+Function to set the menu of a surface - creates the actual menu elements
 */
 function set_surface_menu(surface_menu, surface_id) {
 
     //
-    surface_node = document.getElementById(surface_id + "_main");
+    const surface_node = document.getElementById(surface_id + "_main");
+    if (!surface_node) return;
 
-    //
+    // Clear existing content
     surface_node.innerHTML = "";
 
-    //
-    surface_node.appendChild(window.surfaces_menu_creation[surface_menu]());
+    // Create and append the new menu
+    if (window.surfaces_menu_creation[surface_menu]) {
+        surface_node.appendChild(window.surfaces_menu_creation[surface_menu]());
+    }
 
-    //
-    select_node = document.getElementById(surface_id + "_select");
-
-    //
-    select_node.value = surface_menu;
-
+    // Update select dropdown
+    const select_node = document.getElementById(surface_id + "_select");
+    if (select_node) {
+        select_node.value = surface_menu;
+    }
 }
 
 //
@@ -306,20 +341,23 @@ function update_not_available_surfaces(new_composition) {
 //
 function on_composition_change(new_composition) {
 
-    //
+    // Store old composition
+    const old_composition = window.current_compo;
+
+    // Update current composition
+    window.current_compo = new_composition;
+
+    // Clear menus from old composition
+    clearCompositionMenus(old_composition);
+
+    // Show/hide composition views
     for (node of document.getElementsByClassName("comp_view")) {
-
         if (node.id == new_composition) {
-
             node.style.display = "flex";
-
         }
         else {
-
             node.style.display = "none";
-
         }
-
     }
 
     //
@@ -330,6 +368,39 @@ function on_composition_change(new_composition) {
     //
     document.getElementById("composition_selection_menu").style.display = "none";
 
+    // Create menus for the new composition after it's visible
+    requestAnimationFrame(() => {
+        createCompositionMenus(new_composition);
+    });
+}
+
+/**
+ * Clear all menus from a composition (destroy them)
+ */
+function clearCompositionMenus(composition) {
+    if (!composition) return;
+    const surfaces = document.getElementsByClassName(composition + "_surface");
+    for (const surface of surfaces) {
+        const mainNode = document.getElementById(surface.id + "_main");
+        if (mainNode) {
+            mainNode.innerHTML = "";
+        }
+    }
+}
+
+/**
+ * Create menus for a composition based on stored assignments
+ */
+function createCompositionMenus(composition) {
+    const surfaces = document.getElementsByClassName(composition + "_surface");
+    for (const surface of surfaces) {
+        const menuType = window.surface_menu_assignments[surface.id] ||
+            surface.getAttribute("data-surface-menu") ||
+            "none";
+        if (menuType && menuType !== "none") {
+            set_surface_menu(menuType, surface.id);
+        }
+    }
 }
 
 function on_page_init() {
