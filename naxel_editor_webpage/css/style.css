@@ -163,7 +163,14 @@ hr {
 
 .bt_composition_selection {
 
-    width: 30%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: calc(1/3);
+
+    width: 200px;
     aspect-ratio: 1 / 1;
 
     margin: auto;
@@ -184,4 +191,10 @@ hr {
 
 .bt_composition_selection:active {
     background-color: #4a5568;
+}
+
+.composition_img {
+    width: 50%;
+    aspect-ratio: 1 / 1;
+    margin: auto;
 }
