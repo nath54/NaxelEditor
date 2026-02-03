@@ -305,3 +305,44 @@ function on_composition_change(new_composition) {
 
 }
 
+function on_page_init(){
+
+    //
+    apply_surface_navigation_node();
+
+    return;
+
+    // Apply default pages menus
+
+    // One
+    on_select_surface_menu("camera", "simple_one_window_surface");
+
+    // Duo vertical
+    on_select_surface_menu("camera", "duo_vertical_surface_1");
+    on_select_surface_menu("grid", "duo_vertical_surface_2");
+
+    // Duo horizontal
+    on_select_surface_menu("camera", "duo_horizontal_surface_1");
+    on_select_surface_menu("grid", "duo_horizontal_surface_2");
+
+    // Trio vertical 2 1
+    on_select_surface_menu("camera", "trio_vertical_2_1_surface_1");
+    on_select_surface_menu("palette", "trio_vertical_2_1_surface_2");
+    on_select_surface_menu("grid", "trio_vertical_2_1_surface_3");
+
+    // Trio horizontal 2 1
+    on_select_surface_menu("camera", "trio_horizontal_2_1_surface_1");
+    on_select_surface_menu("palette", "trio_horizontal_2_1_surface_2");
+    on_select_surface_menu("grid", "trio_horizontal_2_1_surface_3");
+
+    // Quadro
+    on_select_surface_menu("camera", "quadro_surface_1");
+    on_select_surface_menu("palette", "quadro_surface_2");
+    on_select_surface_menu("environment", "quadro_surface_3");
+    on_select_surface_menu("grid", "quadro_surface_3");
+
+    // Update everything correctly
+    on_composition_change("one_simple_window");
+
+}
+
