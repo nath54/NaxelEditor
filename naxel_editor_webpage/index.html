@@ -13,18 +13,18 @@
     <link rel="stylesheet" href="css/style.css">
 
     <!-- Base scripts for this web page -->
-    <script src="src/main_page_menus/menu_none.js"></script>
-    <script src="src/main_page_menus/menu_camera.js"></script>
-    <script src="src/main_page_menus/menu_palette.js"></script>
-    <script src="src/main_page_menus/menu_grid.js"></script>
-    <script src="src/main_page_menus/menu_environment.js"></script>
-    <script src="src/main_page_menus/menu_lights.js"></script>
-    <script src="src/main_page_menus/menu_metadata.js"></script>
-    <script src="src/app_navigation.js"></script>
+    <script src="src/main_page_menus/menu_none.js" type="text/javascript"></script>
+    <script src="src/main_page_menus/menu_camera.js" type="text/javascript"></script>
+    <script src="src/main_page_menus/menu_palette.js" type="text/javascript"></script>
+    <script src="src/main_page_menus/menu_grid.js" type="text/javascript"></script>
+    <script src="src/main_page_menus/menu_environment.js" type="text/javascript"></script>
+    <script src="src/main_page_menus/menu_lights.js" type="text/javascript"></script>
+    <script src="src/main_page_menus/menu_metadata.js" type="text/javascript"></script>
+    <script src="src/app_navigation.js" type="text/javascript"></script>
 
 </head>
 
-<body onload="on_page_init();">
+<body onload="on_page_init(); render_all_naxels();">
 
     <!-- Global Navigation Menu -->
     <div id="main-navigation">
@@ -304,6 +304,12 @@
         <!-- View subpage -->
         <div id="subpage-view" style="display: none;" class="subpage">
 
+            <div style="display: flex; flex-grow: 1;">
+
+                <div data-naxel="main_naxel" class="main_view_naxel"></div>
+
+            </div>
+
         </div>
 
         <!-- JSON subpage -->
@@ -379,16 +385,19 @@
     </div>
 
     <!-- Load Naxel Library Scripts (order matters!) -->
-    <script src="../lib_js_naive/vec.js"></script>
-    <script src="../lib_js_naive/color.js"></script>
-    <script src="../lib_js_naive/camera.js"></script>
-    <script src="../lib_js_naive/environment.js"></script>
-    <script src="../lib_js_naive/voxel_grid.js"></script>
-    <script src="../lib_js_naive/ray.js"></script>
-    <script src="../lib_js_naive/ray_marcher.js"></script>
-    <script src="../lib_js_naive/naxel_loader.js"></script>
-    <script src="../lib_js_naive/renderer.js"></script>
-    <script src="../lib_js_naive/lib_naxel.js"></script>
+    <script src="../lib_js_naive/vec.js" type="text/javascript"></script>
+    <script src="../lib_js_naive/color.js" type="text/javascript"></script>
+    <script src="../lib_js_naive/camera.js" type="text/javascript"></script>
+    <script src="../lib_js_naive/environment.js" type="text/javascript"></script>
+    <script src="../lib_js_naive/voxel_grid.js" type="text/javascript"></script>
+    <script src="../lib_js_naive/ray.js" type="text/javascript"></script>
+    <script src="../lib_js_naive/ray_marcher.js" type="text/javascript"></script>
+    <script src="../lib_js_naive/naxel_loader.js" type="text/javascript"></script>
+    <script src="../lib_js_naive/renderer.js" type="text/javascript"></script>
+    <script src="../lib_js_naive/lib_naxel.js" type="text/javascript"></script>
+
+    <!-- Main Naxel -->
+    <script src="src/main_naxel.js" type="text/javascript"></script>
 
 </body>
 
