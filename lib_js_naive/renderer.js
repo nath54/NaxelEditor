@@ -10,17 +10,34 @@ class NaiveRenderer {
     /**
      * Render to a canvas element
      * @param {HTMLCanvasElement} canvas
+     * @param {object} options - Optional { width, height } to override size
      */
-    render(canvas) {
+    render(canvas, options = {}) {
         const camera = this.naxel.camera;
         const grid = this.naxel.grid;
         const environment = this.naxel.environment;
 
-        const width = camera.width;
-        const height = camera.height;
+        // Determine size: options > container > camera
+        let width, height;
+        if (options.width && options.height) {
+            width = options.width;
+            height = options.height;
+        } else {
+            const container = canvas.parentElement;
+            if (container && container.clientWidth > 0 && container.clientHeight > 0) {
+                width = container.clientWidth;
+                height = container.clientHeight;
+            } else {
+                width = camera.width;
+                height = camera.height;
+            }
+        }
 
         canvas.width = width;
         canvas.height = height;
+
+        // Style for cover mode - centered and fills container
+        canvas.style.cssText = "display:block;width:100%;height:100%;object-fit:contain;";
 
         const ctx = canvas.getContext('2d');
         const imageData = ctx.createImageData(width, height);

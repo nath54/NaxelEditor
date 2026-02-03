@@ -42,14 +42,19 @@ function parseVec3Editor(input) {
  * Trigger re-render of all naxel views
  */
 function triggerRerender() {
+    // Sync tmp_naxel with main_naxel changes
+    if (typeof syncTmpNaxel === 'function') {
+        syncTmpNaxel();
+    }
+
     if (typeof render_all_naxels === 'function') {
         render_all_naxels();
     }
     if (typeof refreshGridView === 'function') {
         refreshGridView();
     }
-    if (typeof renderCameraPreview === 'function') {
-        renderCameraPreview();
+    if (typeof renderTmpNaxelPreview === 'function') {
+        renderTmpNaxelPreview();
     }
 }
 

@@ -1,6 +1,6 @@
 /**
  * Tools Menu - Drawing tools and shapes
- * Separate menu for mobile-friendly tool selection
+ * Compact horizontal layout with two rows
  */
 
 // Tool state
@@ -17,134 +17,82 @@ window.toolState = {
 function create_tools_menu() {
     const container = document.createElement("div");
     container.className = "tools-menu";
-    container.style.cssText = "display:flex;flex-direction:column;height:100%;padding:10px;gap:15px;overflow-y:auto;";
+    container.style.cssText = "display:flex;flex-direction:column;height:100%;padding:8px;gap:8px;";
 
-    // Basic tools section
-    const basicSection = createToolSection("BASIC TOOLS", [
-        { id: "paint", icon: "✏️", label: "Paint", description: "Place voxels" },
-        { id: "erase", icon: "🧽", label: "Erase", description: "Remove voxels" },
-        { id: "fill", icon: "💧", label: "Fill", description: "Fill area" },
-        { id: "eyedropper", icon: "🎯", label: "Pick", description: "Pick color" },
-    ]);
-    container.appendChild(basicSection);
+    // Row 1: All tool buttons in a horizontal scrollable row
+    const toolsRow = document.createElement("div");
+    toolsRow.style.cssText = "display:flex;gap:6px;overflow-x:auto;padding:4px 0;flex-shrink:0;";
 
-    // Shape tools section
-    const shapeSection = createToolSection("SHAPE TOOLS", [
-        { id: "shape_rect", icon: "⬜", label: "Rect", description: "Draw rectangle" },
-        { id: "shape_cube", icon: "📦", label: "Cube", description: "Draw 3D cube" },
-        { id: "shape_sphere", icon: "⚪", label: "Sphere", description: "Draw sphere" },
-        { id: "shape_line", icon: "📏", label: "Line", description: "Draw line" },
-        { id: "shape_circle", icon: "⭕", label: "Circle", description: "Draw circle" },
-    ]);
-    container.appendChild(shapeSection);
+    // All tools in one row
+    const allTools = [
+        { id: "paint", icon: "✏️", label: "Paint" },
+        { id: "erase", icon: "🧽", label: "Erase" },
+        { id: "fill", icon: "💧", label: "Fill" },
+        { id: "eyedropper", icon: "🎯", label: "Pick" },
+        { id: "shape_rect", icon: "⬜", label: "Rect" },
+        { id: "shape_cube", icon: "📦", label: "Cube" },
+        { id: "shape_sphere", icon: "⚪", label: "Sphere" },
+        { id: "shape_line", icon: "📏", label: "Line" },
+        { id: "shape_circle", icon: "⭕", label: "Circle" },
+    ];
 
-    // Options section
-    const optionsSection = document.createElement("div");
-    optionsSection.className = "tools-options";
+    allTools.forEach(({ id, icon, label }) => {
+        const btn = document.createElement("button");
+        btn.className = "tool-btn" + (id === "paint" ? " active" : "");
+        btn.dataset.tool = id;
+        btn.title = label;
+        btn.style.cssText = "display:flex;flex-direction:column;align-items:center;padding:6px 10px;background:#2d2d44;border:1px solid #4a5568;border-radius:5px;cursor:pointer;min-width:50px;flex-shrink:0;";
+        btn.innerHTML = `<span style="font-size:18px;">${icon}</span><span style="font-size:10px;color:#aaa;">${label}</span>`;
+        btn.onclick = () => selectTool(id, icon, label);
+        toolsRow.appendChild(btn);
+    });
+    container.appendChild(toolsRow);
 
-    const optionsHeader = document.createElement("div");
-    optionsHeader.className = "tools-section-header";
-    optionsHeader.textContent = "OPTIONS";
-    optionsSection.appendChild(optionsHeader);
+    // Row 2: Options in a horizontal scrollable row
+    const optionsRow = document.createElement("div");
+    optionsRow.style.cssText = "display:flex;gap:12px;overflow-x:auto;padding:4px 0;align-items:center;flex-shrink:0;";
 
-    // Brush size
-    const brushSizeRow = document.createElement("div");
-    brushSizeRow.style.cssText = "margin-bottom:15px;";
-
-    const brushLabel = document.createElement("div");
-    brushLabel.textContent = "Brush Size:";
-    brushLabel.style.cssText = "margin-bottom:8px;font-size:12px;color:#888;";
-    brushSizeRow.appendChild(brushLabel);
-
-    const brushSizes = document.createElement("div");
-    brushSizes.style.cssText = "display:flex;gap:5px;";
+    // Brush size buttons
+    const brushGroup = document.createElement("div");
+    brushGroup.style.cssText = "display:flex;align-items:center;gap:4px;flex-shrink:0;";
+    brushGroup.innerHTML = '<span style="font-size:11px;color:#888;">Size:</span>';
     [1, 2, 3, 5].forEach(size => {
         const btn = document.createElement("button");
         btn.textContent = size;
         btn.className = "brush-size-btn" + (size === 1 ? " active" : "");
         btn.dataset.size = size;
+        btn.style.cssText = "padding:4px 8px;background:#2d2d44;border:1px solid #4a5568;border-radius:4px;cursor:pointer;color:white;font-size:12px;";
         btn.onclick = () => setBrushSize(size);
-        brushSizes.appendChild(btn);
+        brushGroup.appendChild(btn);
     });
-    brushSizeRow.appendChild(brushSizes);
-    optionsSection.appendChild(brushSizeRow);
+    optionsRow.appendChild(brushGroup);
 
-    // Shape mode
-    const shapeModeRow = document.createElement("div");
-    shapeModeRow.style.cssText = "margin-bottom:15px;";
-
-    const modeLabel = document.createElement("div");
-    modeLabel.textContent = "Shape Mode:";
-    modeLabel.style.cssText = "margin-bottom:8px;font-size:12px;color:#888;";
-    shapeModeRow.appendChild(modeLabel);
-
-    const modeContainer = document.createElement("div");
-    modeContainer.style.cssText = "display:flex;gap:15px;";
-
-    const filledLabel = document.createElement("label");
-    filledLabel.style.cssText = "display:flex;align-items:center;gap:5px;cursor:pointer;";
-    filledLabel.innerHTML = '<input type="radio" name="shape-mode" value="filled" checked> Filled';
-    filledLabel.querySelector("input").onchange = () => setShapeMode("filled");
-    modeContainer.appendChild(filledLabel);
-
-    const hollowLabel = document.createElement("label");
-    hollowLabel.style.cssText = "display:flex;align-items:center;gap:5px;cursor:pointer;";
-    hollowLabel.innerHTML = '<input type="radio" name="shape-mode" value="hollow"> Hollow';
-    hollowLabel.querySelector("input").onchange = () => setShapeMode("hollow");
-    modeContainer.appendChild(hollowLabel);
-
-    shapeModeRow.appendChild(modeContainer);
-    optionsSection.appendChild(shapeModeRow);
-
-    container.appendChild(optionsSection);
+    // Shape mode radio
+    const modeGroup = document.createElement("div");
+    modeGroup.style.cssText = "display:flex;align-items:center;gap:8px;flex-shrink:0;";
+    modeGroup.innerHTML = `
+        <span style="font-size:11px;color:#888;">Mode:</span>
+        <label style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:12px;">
+            <input type="radio" name="shape-mode" value="filled" checked style="margin:0;"> Fill
+        </label>
+        <label style="display:flex;align-items:center;gap:3px;cursor:pointer;font-size:12px;">
+            <input type="radio" name="shape-mode" value="hollow" style="margin:0;"> Hollow
+        </label>
+    `;
+    modeGroup.querySelectorAll("input").forEach(input => {
+        input.onchange = () => setShapeMode(input.value);
+    });
+    optionsRow.appendChild(modeGroup);
 
     // Current tool indicator
-    const currentToolDiv = document.createElement("div");
-    currentToolDiv.id = "current-tool-indicator";
-    currentToolDiv.style.cssText = "margin-top:auto;padding:10px;background:#1a1a2e;border-radius:5px;text-align:center;";
-    currentToolDiv.innerHTML = '<span style="color:#888;">Current:</span> <strong id="current-tool-name">✏️ Paint</strong>';
-    container.appendChild(currentToolDiv);
+    const indicator = document.createElement("div");
+    indicator.style.cssText = "display:flex;align-items:center;gap:4px;margin-left:auto;padding:4px 8px;background:#1a1a2e;border-radius:4px;flex-shrink:0;";
+    indicator.innerHTML = '<span style="color:#888;font-size:11px;">Current:</span> <strong id="current-tool-name" style="font-size:12px;">✏️ Paint</strong>';
+    optionsRow.appendChild(indicator);
+
+    container.appendChild(optionsRow);
 
     return container;
-}
-
-/**
- * Create a tool section with buttons
- */
-function createToolSection(title, tools) {
-    const section = document.createElement("div");
-    section.className = "tools-section";
-
-    const header = document.createElement("div");
-    header.className = "tools-section-header";
-    header.textContent = title;
-    section.appendChild(header);
-
-    const grid = document.createElement("div");
-    grid.className = "tools-grid";
-
-    tools.forEach(({ id, icon, label, description }) => {
-        const btn = document.createElement("button");
-        btn.className = "tool-btn" + (id === "paint" ? " active" : "");
-        btn.dataset.tool = id;
-        btn.title = description;
-
-        const iconSpan = document.createElement("span");
-        iconSpan.className = "tool-icon";
-        iconSpan.textContent = icon;
-        btn.appendChild(iconSpan);
-
-        const labelSpan = document.createElement("span");
-        labelSpan.className = "tool-label";
-        labelSpan.textContent = label;
-        btn.appendChild(labelSpan);
-
-        btn.onclick = () => selectTool(id, icon, label);
-        grid.appendChild(btn);
-    });
-
-    section.appendChild(grid);
-    return section;
 }
 
 /**
@@ -156,7 +104,10 @@ function selectTool(toolId, icon, label) {
 
     // Update button states
     document.querySelectorAll(".tool-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.tool === toolId);
+        const isActive = btn.dataset.tool === toolId;
+        btn.classList.toggle("active", isActive);
+        btn.style.background = isActive ? "#3498db" : "#2d2d44";
+        btn.style.borderColor = isActive ? "#3498db" : "#4a5568";
     });
 
     // Update indicator
@@ -188,7 +139,10 @@ function setBrushSize(size) {
 
     // Update button states
     document.querySelectorAll(".brush-size-btn").forEach(btn => {
-        btn.classList.toggle("active", parseInt(btn.dataset.size) === size);
+        const isActive = parseInt(btn.dataset.size) === size;
+        btn.classList.toggle("active", isActive);
+        btn.style.background = isActive ? "#3498db" : "#2d2d44";
+        btn.style.borderColor = isActive ? "#3498db" : "#4a5568";
     });
 }
 
