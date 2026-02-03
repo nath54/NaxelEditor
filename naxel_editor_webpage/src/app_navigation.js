@@ -167,37 +167,19 @@ function apply_surface_navigation_node() {
 Function that adds to the not available list a surface menu
 */
 function add_to_not_available(surface_menu) {
-
-    //
-    window.not_available.push(surface_menu);
-
-    //
-    for (node of document.getElementsByClassName("option_surface_menu_" + surface_menu)) {
-
-        node.disabled = true;
-
+    if (!window.not_available.includes(surface_menu)) {
+        window.not_available.push(surface_menu);
     }
-
 }
 
 /*
 Function that remove a surface menu to the not available list
 */
 function remove_from_not_available(surface_menu) {
-
-    //
     const index = window.not_available.indexOf(surface_menu);
-    if (index > -1) { // only splice array when item is found
-        window.not_available.splice(index, 1); // 2nd parameter means remove one item only
+    if (index > -1) {
+        window.not_available.splice(index, 1);
     }
-
-    //
-    for (node of document.getElementsByClassName("option_surface_menu_" + surface_menu)) {
-
-        node.disabled = false;
-
-    }
-
 }
 
 /*
@@ -210,6 +192,9 @@ function update_all_surface_menu_options(new_composition) {
 
         surface_id = node.id;
 
+        // Get current surface assignment
+        const current_assignment = window.surface_menu_assignments[surface_id] || node.getAttribute("data-surface-menu");
+
         //
         for (surface_menu of Object.keys(window.surfaces_menus)) {
 
@@ -217,7 +202,7 @@ function update_all_surface_menu_options(new_composition) {
             var option = document.getElementById(option_id);
 
             //
-            if (window.not_available.includes(surface_menu)) {
+            if (window.not_available.includes(surface_menu) && surface_menu !== current_assignment) {
 
                 option.disabled = true;
 
@@ -271,6 +256,9 @@ function on_select_surface_menu(surface_menu, surface_id) {
     if (select_node) {
         select_node.value = surface_menu;
     }
+
+    // Update all dropdowns options visibility
+    update_all_surface_menu_options(window.current_compo);
 }
 
 /**
