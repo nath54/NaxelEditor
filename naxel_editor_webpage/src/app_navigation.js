@@ -11,6 +11,15 @@ window.surfaces_menus = {
     "lights": "💡 lights",
     "metadata": "📰 metadata"
 };
+window.surfaces_menu_creation = {
+    "none": create_none_menu,
+    "camera": create_camera_menu,
+    "palette": create_palette_menu,
+    "grid": create_grid_menu,
+    "environment": create_environment_menu,
+    "lights": create_lights_menu,
+    "metadata": create_metadata_menu
+};
 
 // Compos: "simple_one_window", "duo_vertical", "duo_horizontal", "trio_horizontal_2_1", "trio_vertical_2_1", "quadro"
 
@@ -201,7 +210,14 @@ function on_select_surface_menu(surface_menu, surface_id) {
 //
 function set_surface_menu(surface_menu, surface_id) {
 
-    // TODO
+    //
+    surface_node = document.getElementById(surface_id + "_main");
+
+    //
+    surface_node.innerHTML = "";
+
+    //
+    surface_node.appendChild(window.surfaces_menu_creation[surface_menu]());
 
 }
 
