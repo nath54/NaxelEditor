@@ -35,7 +35,11 @@ window.composition_icons = {
     "quadro": "res/composition/quadro.svg"
 }
 
-//
+
+/*
+Function that is called when the user clicks on a button of the main navigation bar
+between the "Edit", "View" or "JSON" pages.
+*/
 function go_to_page(page_id) {
 
     // Go through all the subpages, hide the one we don't want and display only the one we want
@@ -60,7 +64,9 @@ function go_to_page(page_id) {
 }
 
 
-//
+/*
+Function that create the sub navigation bar (Composition Button + Select options surface menus)
+*/
 function create_surface_navigation_node(surface_id) {
 
     //
@@ -93,6 +99,7 @@ function create_surface_navigation_node(surface_id) {
 
     //
     var select = document.createElement("select");
+    select.id = surface_id + "_select";
     select.style.display = "flex";
     select.style.flexGrow = 1;
     select.style.textAlign = "center";
@@ -106,6 +113,7 @@ function create_surface_navigation_node(surface_id) {
 
         var option = document.createElement("option");
         option.id = "option_" + surface_id + "_" + surface_menu;
+        option.value = surface_menu;
         option.innerText = window.surfaces_menus[surface_menu];
         option.style.textAlign = "center";
         option.classList.add("option_surface_menu_" + surface_menu);
@@ -126,7 +134,9 @@ function create_surface_navigation_node(surface_id) {
 
 }
 
-//
+/*
+Function that create the sub navigation bar for all the surface parts
+*/
 function apply_surface_navigation_node() {
 
     //
@@ -148,7 +158,9 @@ function apply_surface_navigation_node() {
 
 }
 
-//
+/*
+Function that adds to the not available list a surface menu
+*/
 function add_to_not_available(surface_menu) {
 
     //
@@ -163,7 +175,9 @@ function add_to_not_available(surface_menu) {
 
 }
 
-//
+/*
+Function that remove a surface menu to the not available list
+*/
 function remove_from_not_available(surface_menu) {
 
     //
@@ -181,7 +195,9 @@ function remove_from_not_available(surface_menu) {
 
 }
 
-//
+/*
+Function that update all the surface menu options from the current not available list.
+*/
 function update_all_surface_menu_options(new_composition) {
 
     //
@@ -212,7 +228,9 @@ function update_all_surface_menu_options(new_composition) {
 
 }
 
-//
+/*
+Function that is called when a user changes the menu of a surface.
+*/
 function on_select_surface_menu(surface_menu, surface_id) {
 
     //
@@ -237,8 +255,9 @@ function on_select_surface_menu(surface_menu, surface_id) {
 
 }
 
-
-//
+/*
+Function to set the menu of a surface
+*/
 function set_surface_menu(surface_menu, surface_id) {
 
     //
@@ -249,6 +268,12 @@ function set_surface_menu(surface_menu, surface_id) {
 
     //
     surface_node.appendChild(window.surfaces_menu_creation[surface_menu]());
+
+    //
+    select_node = document.getElementById(surface_id + "_select");
+
+    //
+    select_node.value = surface_menu;
 
 }
 
@@ -310,8 +335,6 @@ function on_page_init(){
     //
     apply_surface_navigation_node();
 
-    return;
-
     // Apply default pages menus
 
     // One
@@ -342,7 +365,16 @@ function on_page_init(){
     on_select_surface_menu("grid", "quadro_surface_3");
 
     // Update everything correctly
-    on_composition_change("one_simple_window");
+    if(window.innerHeight > window.innerWidth){
+        // Vertical screen ratio
+        on_composition_change("trio_vertical_2_1");
+    }
+    else{
+        // Horizontal screen ratio
+        on_composition_change("trio_horizontal_2_1");
+    }
+
+    // on_composition_change("simple_one_window");
 
 }
 
