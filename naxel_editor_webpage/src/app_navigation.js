@@ -2,23 +2,32 @@
 //
 window.not_available = [];
 window.current_compo = "simple_one_window";
+window.surfaces_menus = {
+    "none": "none",
+    "camera": "📹 camera",
+    "palette": "🎨 palette",
+    "grid": "✏️ grid",
+    "environment": "🏔️ environment",
+    "lights": "💡 lights",
+    "metadata": "📰 metadata"
+};
 
 // Compos: "simple_one_window", "duo_vertical", "duo_horizontal", "trio_horizontal_2_1", "trio_vertical_2_1", "quadro"
 
 //
-function go_to_page(page_id){
+function go_to_page(page_id) {
 
     // Go through all the subpages, hide the one we don't want and display only the one we want
     var all_subpages = document.getElementsByClassName("subpage");
 
-    for(page of all_subpages){
+    for (page of all_subpages) {
 
-        if( page.id == page_id ){
+        if (page.id == page_id) {
 
             // The page we want to view
             page.style.display = "flex";
 
-        } else{
+        } else {
 
             // The page we don't want to view
             page.style.display = "none";
@@ -31,7 +40,7 @@ function go_to_page(page_id){
 
 
 //
-function create_surface_navigation_node(surface_id){
+function create_surface_navigation_node(surface_id) {
 
     //
     var div_node = document.createElement("div");
@@ -53,17 +62,18 @@ function create_surface_navigation_node(surface_id){
     div_node.appendChild(select);
 
     //
-    for(surface_menu of ["camera", "palette", "grid", "environment", "lights", "metadata"]){
-        
+    for (surface_menu of Object.keys(window.surfaces_menus)) {
+
         var option = document.createElement("option");
-        option.innerText = surface_menu;
+        option.id = "option_" + surface_id + "_" + surface_menu;
+        option.innerText = window.surfaces_menus[surface_menu];
         option.style.textAlign = "center";
-        option.classList.add( "option_surface_menu_"+surface_menu );
-        option.setAttribute("onclick", "on_select_surface_menu( \""+surface_menu+"\", \""+surface_id+"\" )");
+        option.classList.add("option_surface_menu_" + surface_menu);
+        option.setAttribute("onclick", "on_select_surface_menu( \"" + surface_menu + "\", \"" + surface_id + "\" )");
 
-        select.appendChild( option );
+        select.appendChild(option);
 
-        if( window.not_available.includes(surface_menu) ){
+        if (window.not_available.includes(surface_menu)) {
 
             option.disabled = true;
 
@@ -77,35 +87,35 @@ function create_surface_navigation_node(surface_id){
 }
 
 //
-function apply_surface_navigation_node(){
+function apply_surface_navigation_node() {
 
     //
     var all_nodes = document.getElementsByClassName("surface_nav");
 
     //
-    for(node of all_nodes){
+    for (node of all_nodes) {
 
         //
         var surface_id = node.parentElement.id;
-        
+
         //
         var div = create_surface_navigation_node(surface_id);
 
         //
-        node.appendChild( div );
+        node.appendChild(div);
 
     }
 
 }
 
 //
-function add_to_not_available(surface_menu){
+function add_to_not_available(surface_menu) {
 
     //
-    window.not_available.push( surface_menu );
+    window.not_available.push(surface_menu);
 
     //
-    for( node of document.getElementsByClassName("option_surface_menu_"+surface_menu) ){
+    for (node of document.getElementsByClassName("option_surface_menu_" + surface_menu)) {
 
         node.disabled = true;
 
@@ -114,7 +124,7 @@ function add_to_not_available(surface_menu){
 }
 
 //
-function remove_from_not_available(surface_menu){
+function remove_from_not_available(surface_menu) {
 
     //
     const index = window.not_available.indexOf(surface_menu);
@@ -123,7 +133,7 @@ function remove_from_not_available(surface_menu){
     }
 
     //
-    for( node of document.getElementsByClassName("option_surface_menu_"+surface_menu) ){
+    for (node of document.getElementsByClassName("option_surface_menu_" + surface_menu)) {
 
         node.disabled = false;
 
@@ -132,7 +142,38 @@ function remove_from_not_available(surface_menu){
 }
 
 //
-function on_select_surface_menu( surface_menu, surface_id ){
+function update_all_surface_menu_options(new_composition) {
+
+    //
+    for (node of document.getElementsByClassName(new_composition + "_surface")) {
+
+        surface_id = node.id;
+
+        //
+        for (surface_menu of Object.keys(window.surfaces_menus)) {
+
+            var option_id = "option_" + surface_id + "_" + surface_menu;
+            var option = document.getElementById(option_id);
+
+            //
+            if (window.not_available.includes(surface_menu)) {
+
+                option.disabled = true;
+
+            } else {
+
+                option.disabled = false;
+
+            }
+
+        }
+
+    }
+
+}
+
+//
+function on_select_surface_menu(surface_menu, surface_id) {
 
     //
     surface_node = document.getElementById(surface_id);
@@ -141,7 +182,7 @@ function on_select_surface_menu( surface_menu, surface_id ){
     old_surface_menu = surface_node.getAttribute("data-surface-menu");
 
     //
-    if(old_surface_menu != "" && old_surface_menu != null){
+    if (old_surface_menu != "" && old_surface_menu != null) {
         remove_from_not_available(old_surface_menu);
     }
 
@@ -149,7 +190,7 @@ function on_select_surface_menu( surface_menu, surface_id ){
     add_to_not_available(surface_menu);
 
     //
-    set_surface_menu( surface_menu, surface_id );
+    set_surface_menu(surface_menu, surface_id);
 
     //
     surface_node.setAttribute("data-surface-menu", surface_menu);
@@ -158,14 +199,14 @@ function on_select_surface_menu( surface_menu, surface_id ){
 
 
 //
-function set_surface_menu( surface_menu, surface_id ){
+function set_surface_menu(surface_menu, surface_id) {
 
     // TODO
 
 }
 
 //
-function show_composition_menu_selection(){
+function show_composition_menu_selection() {
 
     //
     document.getElementById("composition_selection_menu").style.display = "flex";
@@ -173,33 +214,33 @@ function show_composition_menu_selection(){
 }
 
 //
-function update_not_available_surfaces(new_composition){
+function update_not_available_surfaces(new_composition) {
 
     //
-    window.not_available = [];    
+    window.not_available = [];
 
     //
-    for( node of document.getElementsByClassName(new_composition+"_surface") ){
+    for (node of document.getElementsByClassName(new_composition + "_surface")) {
 
         //
-        window.not_available.push( node.getAttribute("data-surface-menu") );
+        window.not_available.push(node.getAttribute("data-surface-menu"));
 
     }
 
 }
 
 //
-function on_composition_change(new_composition){
+function on_composition_change(new_composition) {
 
     //
-    for(node of document.getElementsByClassName("comp_view")){
-     
-        if( node.id == new_composition ){
+    for (node of document.getElementsByClassName("comp_view")) {
+
+        if (node.id == new_composition) {
 
             node.style.display = "flex";
 
         }
-        else{
+        else {
 
             node.style.display = "none";
 
@@ -209,9 +250,11 @@ function on_composition_change(new_composition){
 
     //
     update_not_available_surfaces(new_composition);
+    //
+    update_all_surface_menu_options(new_composition);
 
     //
-    document.getElementById("composition_selection_menu").style.display = "none";   
+    document.getElementById("composition_selection_menu").style.display = "none";
 
 }
 
