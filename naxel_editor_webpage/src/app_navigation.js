@@ -362,7 +362,7 @@ function on_page_init(){
     on_select_surface_menu("camera", "quadro_surface_1");
     on_select_surface_menu("palette", "quadro_surface_2");
     on_select_surface_menu("environment", "quadro_surface_3");
-    on_select_surface_menu("grid", "quadro_surface_3");
+    on_select_surface_menu("grid", "quadro_surface_4");
 
     // Update everything correctly
     if(window.innerHeight > window.innerWidth){
