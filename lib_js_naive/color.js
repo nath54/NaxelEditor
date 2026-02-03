@@ -22,6 +22,15 @@ class Color {
         const toHex = (n) => n.toString(16).padStart(2, '0');
         return `#${toHex(this.r)}${toHex(this.g)}${toHex(this.b)}`;
     }
+
+    /**
+     * Export color as array [r, g, b, a]
+     * Matches Python Color.export_to_lst()
+     * @returns {number[]}
+     */
+    exportToLst() {
+        return [this.r, this.g, this.b, this.a];
+    }
 }
 
 // Named colors lookup

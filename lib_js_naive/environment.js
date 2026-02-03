@@ -8,6 +8,19 @@ class Environment {
         this.lightDiffusionStrength = options.lightDiffusionStrength || 1.0;
         this.lightAlgorithm = options.lightAlgorithm || 'none';
     }
+
+    /**
+     * Export environment to JSON-compatible dictionary
+     * Matches Python Environment.export_to_dict()
+     * @returns {object}
+     */
+    exportToDict() {
+        return {
+            environment_type: 'none',
+            light_diffusion_strength: this.lightDiffusionStrength,
+            light_algorithm: this.lightAlgorithm,
+        };
+    }
 }
 
 class EnvironmentColor extends Environment {
@@ -16,6 +29,21 @@ class EnvironmentColor extends Environment {
         this.type = 'color';
         this.color = options.color || new Color(0, 0, 0, 0);
         this.lightEmission = options.lightEmission || 1.0;
+    }
+
+    /**
+     * Export environment to JSON-compatible dictionary
+     * Matches Python EnvironmentColor.export_to_dict()
+     * @returns {object}
+     */
+    exportToDict() {
+        return {
+            environment_type: 'color',
+            light_diffusion_strength: this.lightDiffusionStrength,
+            light_algorithm: this.lightAlgorithm,
+            environment_color: this.color.exportToLst(),
+            environment_color_light_emission: this.lightEmission,
+        };
     }
 }
 
@@ -29,6 +57,25 @@ class EnvironmentSkyBox extends Environment {
         this.groundColorLightEmission = options.groundColorLightEmission || 0.0;
         this.sunDirection = options.sunDirection || new Vec3(0, -1, 0);
         this.sunLightEmission = options.sunLightEmission || 1.0;
+    }
+
+    /**
+     * Export environment to JSON-compatible dictionary
+     * Matches Python EnvironmentSkyBox.export_to_dict()
+     * @returns {object}
+     */
+    exportToDict() {
+        return {
+            environment_type: 'skybox',
+            light_diffusion_strength: this.lightDiffusionStrength,
+            light_algorithm: this.lightAlgorithm,
+            sky_color: this.skyColor.exportToLst(),
+            sky_color_light_emission: this.skyColorLightEmission,
+            ground_color: this.groundColor.exportToLst(),
+            ground_color_light_emission: this.groundColorLightEmission,
+            sun_direction: this.sunDirection.exportToStr(),
+            sun_light_emission: this.sunLightEmission,
+        };
     }
 }
 

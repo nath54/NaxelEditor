@@ -123,6 +123,19 @@ class VoxelGrid:
 
         return self._is_empty
 
+    def export_to_dict(self) -> dict[str, list[int]]:
+        """
+        Export the processed voxel grid as a dictionary.
+
+        Returns:
+            Dictionary where keys are position strings "x,y,z" and values are RGBA color lists
+        """
+
+        return {
+            f"{x},{y},{z}": color.export_to_lst()
+            for (x, y, z), color in self._voxels.items()
+        }
+
     def build_from_frame(
         self,
         frame: NaxelDataFrame,

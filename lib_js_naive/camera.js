@@ -26,6 +26,24 @@ class Camera {
             pixelSize: this.pixelSize,
         });
     }
+
+    /**
+     * Export camera to JSON-compatible dictionary
+     * Matches Python Camera.export_to_dict()
+     * @returns {object}
+     */
+    exportToDict() {
+        return {
+            camera_position: this.position.exportToStr(),
+            camera_rotation: this.rotation.exportToStr(),
+            camera_focal: this.focal,
+            camera_clip_start: this.clipStart,
+            camera_clip_end: this.clipEnd,
+            camera_width: this.width,
+            camera_height: this.height,
+            camera_pixel_size: this.pixelSize,
+        };
+    }
 }
 
 /**

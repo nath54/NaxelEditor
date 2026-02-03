@@ -66,6 +66,19 @@ class VoxelGrid {
     }
 
     /**
+     * Export the processed voxel grid as a dictionary
+     * Matches Python VoxelGrid.export_to_dict()
+     * @returns {object} Dictionary where keys are "x,y,z" and values are [r,g,b,a]
+     */
+    exportToDict() {
+        const result = {};
+        for (const [key, color] of this._voxels) {
+            result[key] = color.exportToLst();
+        }
+        return result;
+    }
+
+    /**
      * Rasterize a shape into the grid
      * @param {object} shape - Shape definition
      * @param {object} palette - Color palette

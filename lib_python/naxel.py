@@ -254,3 +254,81 @@ class Naxel:
 
         return res
 
+    def export_to_dict_preprocessed(self) -> dict[str, Any]:
+        """
+        Export the naxel object with all shapes expanded to individual voxels.
+
+        This method processes shapes (cubes, spheres, lines, etc.) and converts
+        them to individual voxel positions with their resolved colors.
+        The resulting JSON can be used for faster rendering as it requires
+        no shape processing.
+
+        Returns:
+            Dictionary with metadata, environment, camera, and processed voxels_dict
+        """
+
+        # Import here to avoid circular dependency
+        from .voxel_grid import VoxelGrid
+
+        res: dict[str, Any] = {
+            # --- Metadata ---
+            "name": self.name,
+            "author": self.author,
+            "description": self.description,
+            "date_created": self.date_created,
+            "date_modified": self.date_modified,
+            "tags": self.tags,
+            "license": self.license,
+            "is_post_processed": True,  # Mark as post-processed
+
+            # --- General Data ---
+            "default_color": self.general_data.default_color.export_to_lst(),
+            "color_palette": {},  # Empty palette since colors are now resolved
+            "grid_thickness": self.general_data.grid_thickness,
+            "grid_color": self.general_data.grid_color.export_to_lst(),
+        }
+
+        if len(self.data_frames) == 0:
+
+            pass
+
+        elif len(self.data_frames) == 1:
+
+            # Process shapes and export as voxels_dict
+            grid: VoxelGrid = VoxelGrid()
+            grid.build_from_frame(self.data_frames[0], self.general_data)
+
+            res["voxels_dict"] = grid.export_to_dict()
+
+        else:
+
+            # Process each frame
+            frames_data: list[dict[str, Any]] = []
+
+            for idx, df in enumerate(self.data_frames):
+
+                grid = VoxelGrid()
+                grid.build_from_frame(df, self.general_data)
+
+                frame_dict: dict[str, Any] = {
+                    "frame_id": df.frame_id,
+                    "frame_duration": df.frame_duration,
+                    "voxels_dict": grid.export_to_dict(),
+                }
+
+                frames_data.append(frame_dict)
+
+            res["frames"] = frames_data
+
+        res = merge_dicts(
+            res,
+            self.environment.export_to_dict()
+        )
+
+        res = merge_dicts(
+            res,
+            self.camera.export_to_dict()
+        )
+
+        return res
+

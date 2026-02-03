@@ -50,6 +50,15 @@ class Vec3 {
     clone() {
         return new Vec3(this.x, this.y, this.z);
     }
+
+    /**
+     * Export position to string format "x, y, z"
+     * Matches Python Vec3.export_to_str()
+     * @returns {string}
+     */
+    exportToStr() {
+        return `${this.x}, ${this.y}, ${this.z}`;
+    }
 }
 
 /**
