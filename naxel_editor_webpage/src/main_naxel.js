@@ -1,6 +1,27 @@
 
 window.naxel_objects["main_naxel"] = {
     "name": "Naxel Triangle Example",
+    "color_palette": {
+        "white": [255, 255, 255],
+        "red": [255, 0, 0],
+        "green": [0, 255, 0],
+        "blue": [0, 0, 255],
+        "yellow": [255, 255, 0]
+    },
+    "voxels_dict": {
+        "0,0,0": "red",
+        "1,0,0": "red",
+        "2,0,0": "red",
+        "3,0,0": "green",
+        "4,0,0": "green",
+        "5,0,0": "blue",
+        "0,1,0": "yellow",
+        "1,1,0": "yellow",
+        "2,1,0": "white",
+        "0,0,1": "green",
+        "1,0,1": "blue",
+        "2,0,1": "red"
+    },
     "voxels_list": [
         {
             "type": "shape_triangle",
@@ -28,6 +49,9 @@ window.naxel_objects["main_naxel"] = {
             "color": [0, 0, 255]
         }
     ],
+    "light_emission_dict": {
+        "2,2,0": [1.0, 1.0, 0.8]
+    },
     "environment_type": "color",
     "environment_color": [30, 30, 50, 0],
     "camera_position": [5, -10, 5],

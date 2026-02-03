@@ -18,26 +18,29 @@ window.cameraState = {
 function create_camera_menu() {
     const container = document.createElement("div");
     container.className = "camera-menu";
-    container.style.cssText = "display:flex;flex-direction:column;height:100%;padding:10px;gap:10px;";
+    container.style.cssText = "display:flex;flex-direction:column;height:100%;padding:10px;gap:5px;";
 
-    // Header
-    const header = document.createElement("h3");
-    header.textContent = "📹 Camera";
-    header.style.cssText = "margin:0 0 10px 0;font-size:16px;";
-    container.appendChild(header);
+    // Row
+    const row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:5px;margin-bottom:5px;";
+    container.appendChild(row);
 
     // 3D preview canvas
     const previewContainer = document.createElement("div");
-    previewContainer.style.cssText = "flex:1;background:#0a0a1a;border-radius:5px;overflow:hidden;min-height:150px;";
+    previewContainer.style.cssText = "flex-grow: 0.25; background:#0a0a1a;border-radius:5px;overflow:hidden;min-height:50px;max-height:100px;aspect-ratio:1/1; margin-right: 15px;";
 
     const previewCanvas = document.createElement("canvas");
     previewCanvas.id = "camera-preview-canvas";
     previewCanvas.style.cssText = "width:100%;height:100%;";
     previewContainer.appendChild(previewCanvas);
-    container.appendChild(previewContainer);
+    row.appendChild(previewContainer);
 
     const naxel = getMainNaxel();
     const camera = naxel?.camera || {};
+
+    const row_col = document.createElement("div");
+    row_col.style.cssText = "display:flex;flex-direction:column;gap:5px;margin-top: auto; margin-bottom: auto; flex-grow: 1;";
+    row.appendChild(row_col);
 
     // Distance control
     const distanceRow = createSlider(
@@ -47,7 +50,7 @@ function create_camera_menu() {
         camera.distance || window.naxelConfig?.defaultCameraDistance || 15,
         1
     );
-    container.appendChild(distanceRow);
+    row_col.appendChild(distanceRow);
 
     // Rotation X (pitch)
     const rotXRow = createSlider(
@@ -57,7 +60,7 @@ function create_camera_menu() {
         camera.rotation_x || 0.3,
         0.1
     );
-    container.appendChild(rotXRow);
+    row_col.appendChild(rotXRow);
 
     // Rotation Y (yaw)
     const rotYRow = createSlider(
@@ -67,16 +70,21 @@ function create_camera_menu() {
         camera.rotation_y || 0.5,
         0.1
     );
-    container.appendChild(rotYRow);
+    row_col.appendChild(rotYRow);
+
+    // Target
+    const row_target = document.createElement("div");
+    row_target.style.cssText = "display:flex;gap:5px;margin-bottom:5px;";
+    container.appendChild(row_target);
 
     // Target position
     const targetHeader = document.createElement("div");
     targetHeader.textContent = "Target Position:";
-    targetHeader.style.cssText = "margin-top:10px;font-size:12px;color:#888;";
-    container.appendChild(targetHeader);
+    targetHeader.style.cssText = "margin-top:5px;font-size:12px;color:#888;";
+    row_target.appendChild(targetHeader);
 
     const targetRow = document.createElement("div");
-    targetRow.style.cssText = "display:flex;gap:5px;margin-bottom:10px;";
+    targetRow.style.cssText = "display:flex;gap:5px;margin-bottom:5px;";
 
     ["x", "y", "z"].forEach(axis => {
         const input = document.createElement("input");
@@ -84,15 +92,15 @@ function create_camera_menu() {
         input.id = `camera-target-${axis}`;
         input.value = camera[`target_${axis}`] || 0;
         input.step = 0.5;
-        input.style.cssText = "flex:1;padding:8px;background:#1a1a2e;color:white;border:1px solid #4a5568;border-radius:5px;";
+        input.style.cssText = "flex:1;padding:4px;background:#1a1a2e;color:white;border:1px solid #4a5568;border-radius:5px;";
         input.onchange = () => updateCameraFromInputs();
         targetRow.appendChild(input);
     });
-    container.appendChild(targetRow);
+    row_target.appendChild(targetRow);
 
     // Action buttons
     const actionsRow = document.createElement("div");
-    actionsRow.style.cssText = "display:flex;gap:10px;";
+    actionsRow.style.cssText = "display:flex;gap:8px;";
 
     const applyBtn = document.createElement("button");
     applyBtn.textContent = "Apply";
@@ -108,17 +116,20 @@ function create_camera_menu() {
 
     const centerBtn = document.createElement("button");
     centerBtn.textContent = "Auto-Center";
-    centerBtn.style.cssText = "flex:1;padding:10px;background:#2ecc71;color:white;border:none;border-radius:5px;cursor:pointer;";
+    centerBtn.style.cssText = "flex:1;padding:5px;background:#2ecc71;color:white;border:none;border-radius:5px;cursor:pointer;";
     centerBtn.onclick = () => autoCenterCamera();
     actionsRow.appendChild(centerBtn);
 
     container.appendChild(actionsRow);
 
-    // Initialize preview
-    setTimeout(() => {
-        initCameraPreview();
-        setupCameraInputListeners();
-    }, 0);
+    // Initialize preview after DOM is rendered
+    // Use double requestAnimationFrame for reliable timing
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            initCameraPreview();
+            setupCameraInputListeners();
+        });
+    });
 
     return container;
 }
@@ -130,10 +141,10 @@ function initCameraPreview() {
     const canvas = document.getElementById("camera-preview-canvas");
     if (!canvas) return;
 
-    // Set canvas size
+    // Set canvas size (with fallback for 0 dimensions)
     const container = canvas.parentElement;
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
+    canvas.width = container.clientWidth || 200;
+    canvas.height = container.clientHeight || 150;
 
     // Mouse/touch interaction for rotation
     let isDragging = false;

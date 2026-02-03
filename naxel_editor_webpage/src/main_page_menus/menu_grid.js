@@ -127,11 +127,14 @@ function create_grid_menu() {
 
     container.appendChild(controls);
 
-    // Setup event listeners after DOM is ready
-    setTimeout(() => {
-        initGridCanvas();
-        initSlice3DPreview();
-    }, 0);
+    // Setup event listeners after DOM is rendered
+    // Use requestAnimationFrame for better timing than setTimeout
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            initGridCanvas();
+            initSlice3DPreview();
+        });
+    });
 
     return container;
 }
@@ -143,10 +146,12 @@ function initGridCanvas() {
     const canvas = document.getElementById("grid-editor-canvas");
     if (!canvas) return;
 
-    // Resize to fit container
+    // Resize to fit container (with fallback for 0 dimensions)
     const container = canvas.parentElement;
-    canvas.width = container.clientWidth - 10;
-    canvas.height = container.clientHeight - 10;
+    const width = container.clientWidth || 300;
+    const height = container.clientHeight || 300;
+    canvas.width = Math.max(width - 10, 100);
+    canvas.height = Math.max(height - 10, 100);
 
     // Mouse events
     canvas.addEventListener("click", handleGridClick);
@@ -160,8 +165,10 @@ function initGridCanvas() {
 
     // Resize observer
     const resizeObserver = new ResizeObserver(() => {
-        canvas.width = container.clientWidth - 10;
-        canvas.height = container.clientHeight - 10;
+        const w = container.clientWidth || 300;
+        const h = container.clientHeight || 300;
+        canvas.width = Math.max(w - 10, 100);
+        canvas.height = Math.max(h - 10, 100);
         refreshGridView();
     });
     resizeObserver.observe(container);
@@ -235,8 +242,9 @@ function refreshGridView() {
  */
 function drawSliceVoxels(ctx, naxel, axis, slice, zoom) {
     const voxels = naxel.voxels_dict || {};
+    const palette = naxel.color_palette || {};
 
-    Object.entries(voxels).forEach(([posStr, color]) => {
+    Object.entries(voxels).forEach(([posStr, colorRef]) => {
         const [x, y, z] = posStr.split(",").map(Number);
         let drawX, drawY, sliceMatch;
 
@@ -245,8 +253,19 @@ function drawSliceVoxels(ctx, naxel, axis, slice, zoom) {
         else { drawX = y; drawY = z; sliceMatch = x === slice; }
 
         if (sliceMatch) {
-            const [r, g, b] = Array.isArray(color) ? color : [color.r || 128, color.g || 128, color.b || 128];
-            ctx.fillStyle = `rgb(${r},${g},${b})`;
+            // Resolve color from palette if it's a string
+            let rgb;
+            if (typeof colorRef === "string") {
+                rgb = palette[colorRef] || [128, 128, 128];
+            } else if (Array.isArray(colorRef)) {
+                rgb = colorRef;
+            } else if (colorRef && typeof colorRef === "object") {
+                rgb = [colorRef.r || 128, colorRef.g || 128, colorRef.b || 128];
+            } else {
+                rgb = [128, 128, 128];
+            }
+
+            ctx.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
             ctx.fillRect(drawX * zoom + 1, drawY * zoom + 1, zoom - 2, zoom - 2);
         }
     });

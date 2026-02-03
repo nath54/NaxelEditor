@@ -61,8 +61,12 @@ function create_palette_menu() {
     actions.appendChild(deleteBtn);
     container.appendChild(actions);
 
-    // Initialize
-    setTimeout(() => refreshPaletteGrid(), 0);
+    // Initialize after DOM is rendered
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            refreshPaletteGrid();
+        });
+    });
 
     return container;
 }

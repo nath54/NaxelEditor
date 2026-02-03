@@ -113,7 +113,7 @@ function createLabeledInput(label, type, id, options = null) {
  */
 function createSlider(label, id, min, max, value, step = 0.1) {
     const row = document.createElement("div");
-    row.style.cssText = "display:flex;align-items:center;gap:10px;margin-bottom:10px;";
+    row.style.cssText = "display:flex;align-items:center;gap:5px;margin-bottom:5px;";
 
     const lbl = document.createElement("label");
     lbl.textContent = label;
@@ -152,7 +152,7 @@ function createSlider(label, id, min, max, value, step = 0.1) {
  */
 function createColorPicker(label, id, rgbValue) {
     const row = document.createElement("div");
-    row.style.cssText = "display:flex;align-items:center;gap:10px;margin-bottom:10px;";
+    row.style.cssText = "display:flex;align-items:center;gap:5px;margin-bottom:5px;";
 
     const lbl = document.createElement("label");
     lbl.textContent = label;
@@ -163,7 +163,7 @@ function createColorPicker(label, id, rgbValue) {
     picker.type = "color";
     picker.id = id;
     picker.value = rgbToHex(rgbValue);
-    picker.style.cssText = "width:60px;height:35px;border:none;cursor:pointer;";
+    picker.style.cssText = "width:40px;height:25px;border:none;cursor:pointer;";
     row.appendChild(picker);
 
     return row;
