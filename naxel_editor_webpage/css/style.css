@@ -139,6 +139,7 @@ hr {
 
 
 .surface{
+    border: 2px solid black;
     display: flex;
     flex-direction: column;
     flex-grow: 1;

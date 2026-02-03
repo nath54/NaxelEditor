@@ -173,13 +173,45 @@ function show_composition_menu_selection(){
 }
 
 //
+function update_not_available_surfaces(new_composition){
+
+    //
+    window.not_available = [];    
+
+    //
+    for( node of document.getElementsByClassName(new_composition+"_surface") ){
+
+        //
+        window.not_available.push( node.getAttribute("data-surface-menu") );
+
+    }
+
+}
+
+//
 function on_composition_change(new_composition){
 
     //
-    for(node of document.getElementsByClassName("")){
-        
+    for(node of document.getElementsByClassName("comp_view")){
+     
+        if( node.id == new_composition ){
+
+            node.style.display = "flex";
+
+        }
+        else{
+
+            node.style.display = "none";
+
+        }
+
     }
 
+    //
+    update_not_available_surfaces(new_composition);
+
+    //
+    document.getElementById("composition_selection_menu").style.display = "none";   
 
 }
 
