@@ -2,6 +2,8 @@
 //
 window.not_available = [];
 window.current_compo = "simple_one_window";
+
+//
 window.surfaces_menus = {
     "none": "none",
     "camera": "📹 camera",
@@ -11,6 +13,8 @@ window.surfaces_menus = {
     "lights": "💡 lights",
     "metadata": "📰 metadata"
 };
+
+//
 window.surfaces_menu_creation = {
     "none": create_none_menu,
     "camera": create_camera_menu,
@@ -21,7 +25,15 @@ window.surfaces_menu_creation = {
     "metadata": create_metadata_menu
 };
 
-// Compos: "simple_one_window", "duo_vertical", "duo_horizontal", "trio_horizontal_2_1", "trio_vertical_2_1", "quadro"
+//
+window.composition_icons = {
+    "simple_one_window": "res/composition/simple_one_window.svg",
+    "duo_vertical": "res/composition/duo_vertical.svg",
+    "duo_horizontal": "res/composition/duo_horizontal.svg",
+    "trio_horizontal_2_1": "res/composition/trio_horizontal_2_1.svg",
+    "trio_vertical_2_1": "res/composition/trio_vertical_2_1.svg",
+    "quadro": "res/composition/quadro.svg"
+}
 
 //
 function go_to_page(page_id) {
@@ -52,6 +64,13 @@ function go_to_page(page_id) {
 function create_surface_navigation_node(surface_id) {
 
     //
+    var parent_node = document.getElementById(surface_id).parentElement;
+    if (!Object.keys(window.composition_icons).includes(parent_node.id)) {
+        parent_node = parent_node.parentElement;
+    }
+    var composition_name = parent_node.id;
+
+    //
     var div_node = document.createElement("div");
     div_node.style.display = "flex";
     div_node.style.flexGrow = 1;
@@ -59,7 +78,16 @@ function create_surface_navigation_node(surface_id) {
 
     //
     var bt_compo = document.createElement("button");
-    bt_compo.innerText = "comp";
+    bt_compo.style.backgroundImage = "url(" + window.composition_icons[composition_name] + ")";
+    bt_compo.style.backgroundSize = "cover";
+    bt_compo.style.backgroundPosition = "center";
+    bt_compo.style.backgroundRepeat = "no-repeat";
+    bt_compo.style.backgroundColor = "#080819ff";
+    bt_compo.style.border = "1px solid #080819ff";
+    bt_compo.style.cursor = "pointer";
+    bt_compo.style.height = "100%";
+    bt_compo.style.minWidth = "25px";
+    bt_compo.style.aspectRatio = "1 / 1";
     bt_compo.setAttribute("onclick", "show_composition_menu_selection();");
     div_node.appendChild(bt_compo);
 
@@ -68,6 +96,9 @@ function create_surface_navigation_node(surface_id) {
     select.style.display = "flex";
     select.style.flexGrow = 1;
     select.style.textAlign = "center";
+    select.style.backgroundColor = "#080819ff";
+    select.style.border = "1px solid #080819ff";
+    select.style.color = "#ffffff";
     div_node.appendChild(select);
 
     //
