@@ -9,6 +9,7 @@ window.surfaces_menus = {
     "camera": "📹 camera",
     "palette": "🎨 palette",
     "grid": "✏️ grid",
+    "tools": "🔧 tools",
     "environment": "🏔️ environment",
     "lights": "💡 lights",
     "metadata": "📰 metadata"
@@ -20,6 +21,7 @@ window.surfaces_menu_creation = {
     "camera": create_camera_menu,
     "palette": create_palette_menu,
     "grid": create_grid_menu,
+    "tools": create_tools_menu,
     "environment": create_environment_menu,
     "lights": create_lights_menu,
     "metadata": create_metadata_menu
@@ -330,10 +332,15 @@ function on_composition_change(new_composition) {
 
 }
 
-function on_page_init(){
+function on_page_init() {
 
     //
     apply_surface_navigation_node();
+
+    // Initialize JSON subpage
+    if (typeof initJsonSubpage === "function") {
+        initJsonSubpage();
+    }
 
     // Apply default pages menus
 
@@ -365,11 +372,11 @@ function on_page_init(){
     on_select_surface_menu("grid", "quadro_surface_4");
 
     // Update everything correctly
-    if(window.innerHeight > window.innerWidth){
+    if (window.innerHeight > window.innerWidth) {
         // Vertical screen ratio
         on_composition_change("trio_vertical_2_1");
     }
-    else{
+    else {
         // Horizontal screen ratio
         on_composition_change("trio_horizontal_2_1");
     }

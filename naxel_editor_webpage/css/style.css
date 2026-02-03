@@ -199,12 +199,347 @@ hr {
     margin: auto;
 }
 
-.main_view_naxel{
+.main_view_naxel {
     width: 100%;
     height: 100%;
 }
 
-.main_view_naxel *{
+.main_view_naxel * {
     width: 100%;
     height: 100%;
+}
+
+/* ========================================
+   Palette Menu Styles
+   ======================================== */
+
+.palette-tile {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    min-height: 60px;
+    border: 2px solid #4a5568;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.1s, border-color 0.1s;
+}
+
+.palette-tile:hover {
+    transform: scale(1.05);
+    border-color: #7777ac;
+}
+
+.palette-tile.selected {
+    border-color: white;
+    border-width: 3px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.palette-tile-label {
+    font-size: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 4px;
+    border-radius: 3px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 2px;
+}
+
+.palette-add {
+    background: #1a1a2e;
+    font-size: 24px;
+    align-items: center;
+    border-style: dashed;
+}
+
+.palette-add:hover {
+    background: #24243e;
+}
+
+.palette-action-btn {
+    flex: 1;
+    padding: 10px;
+    background: #24243e;
+    color: white;
+    border: 1px solid #4a5568;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.palette-action-btn:hover {
+    background: #383862;
+}
+
+/* ========================================
+   Grid Menu Styles
+   ======================================== */
+
+.grid-axis-btn {
+    padding: 8px 12px;
+    background: #1a1a2e;
+    color: white;
+    border: 1px solid #4a5568;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.15s;
+}
+
+.grid-axis-btn:hover {
+    background: #383862;
+}
+
+.grid-axis-btn.active {
+    background: #3498db;
+    border-color: #3498db;
+}
+
+.grid-nav-btn {
+    padding: 8px 12px;
+    background: #24243e;
+    color: white;
+    border: 1px solid #4a5568;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.grid-nav-btn:hover {
+    background: #383862;
+}
+
+.grid-toggle-btn {
+    padding: 6px 10px;
+    background: #1a1a2e;
+    color: #888;
+    border: 1px solid #4a5568;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.15s;
+}
+
+.grid-toggle-btn:hover {
+    background: #24243e;
+}
+
+.grid-toggle-btn.active {
+    background: #24243e;
+    color: white;
+    border-color: #7777ac;
+}
+
+/* ========================================
+   Tools Menu Styles
+   ======================================== */
+
+.tools-section {
+    margin-bottom: 15px;
+}
+
+.tools-section-header {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tool-btn {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a2e;
+    border: 2px solid #4a5568;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.tool-btn:hover {
+    background: #24243e;
+    border-color: #7777ac;
+}
+
+.tool-btn.active {
+    border-color: #3498db;
+    background: #24243e;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+}
+
+.tool-icon {
+    font-size: 22px;
+    margin-bottom: 2px;
+}
+
+.tool-label {
+    font-size: 10px;
+    color: #ccc;
+}
+
+.brush-size-btn {
+    width: 35px;
+    height: 35px;
+    background: #1a1a2e;
+    color: white;
+    border: 1px solid #4a5568;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.brush-size-btn:hover {
+    background: #24243e;
+}
+
+.brush-size-btn.active {
+    background: #3498db;
+    border-color: #3498db;
+}
+
+/* ========================================
+   Surface Menu Navigation
+   ======================================== */
+
+.surface_nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    padding: 5px;
+    background: #1a1a2e;
+    border-bottom: 1px solid #4a5568;
+}
+
+.surface_nav button {
+    padding: 6px 10px;
+    background: #24243e;
+    color: white;
+    border: 1px solid #4a5568;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.surface_nav button:hover {
+    background: #383862;
+}
+
+.surface_nav button.active {
+    background: #3498db;
+    border-color: #3498db;
+}
+
+.surface_main {
+    flex: 1;
+    overflow: auto;
+    min-height: 0;
+}
+
+/* ========================================
+   Context Menu
+   ======================================== */
+
+.grid-context-menu button {
+    padding: 6px 10px;
+    background: #1a1a2e;
+    color: white;
+    border: 1px solid #4a5568;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.1s;
+}
+
+.grid-context-menu button:hover {
+    background: #383862;
+}
+
+/* ========================================
+   Mobile Touch Friendly
+   ======================================== */
+
+@media (max-width: 768px) {
+    .palette-tile {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+    }
+
+    .tool-btn {
+        width: 55px;
+        height: 55px;
+    }
+
+    .grid-axis-btn,
+    .grid-nav-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    body {
+        padding: 10px;
+    }
+}
+
+/* ========================================
+   Slider Inputs
+   ======================================== */
+
+input[type="range"] {
+    accent-color: #3498db;
+}
+
+input[type="number"],
+input[type="text"],
+textarea,
+select {
+    background: #1a1a2e;
+    color: white;
+    border: 1px solid #4a5568;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* ========================================
+   Toggle Button Active State
+   ======================================== */
+
+.toggle-btn {
+    padding: 8px 12px;
+    background: #1a1a2e;
+    color: #888;
+    border: 1px solid #4a5568;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.toggle-btn.active {
+    background: #24243e;
+    color: white;
+    border-color: #3498db;
 }
